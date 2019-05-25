@@ -135,6 +135,11 @@ This variable tells Emacs to prefer the =.el= file if it's newer, even if there 
                               "Push window state onto window stack"))
 #+END_SRC
 
+- turn off the stupid system bell
+
+#+BEGIN_SRC emacs-lisp
+  (setq ring-bell-function 'ignore)
+#+END_SRC
 - Set up a way to hook up multiple modes
 
 #+BEGIN_SRC emacs-lisp
@@ -356,6 +361,7 @@ Identify the location of the cursor:
 ** Neotree/sidebar
 
 #+begin_src emacs-lisp
+  (use-package all-the-icons)
   (use-package neotree
     :config
     (customize-set-variable 'neo-theme (if (display-graphic-p) 'icons 'arrow))
@@ -413,6 +419,27 @@ Tab settings. No tabs inserted but tabs have a width of 8.
     (browse-kill-ring-default-keybindings)
     :bind
     ("s-y" . browse-kill-ring))
+#+END_SRC
+
+** Undo
+
+Use undo tree
+
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :diminish undo-tree-mode
+    :init
+    (global-undo-tree-mode)
+    (setq undo-tree-visualizer-timestamps t)
+    (setq undo-tree-visualizer-diff t))
+
+#+END_SRC
+
+** Text size
+
+#+BEGIN_SRC emacs-lisp
+  (bind-key "C-+" 'text-scale-increase)
+  (bind-key "C--" 'text-scale-decrease)
 #+END_SRC
 
 * Org

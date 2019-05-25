@@ -15,7 +15,7 @@
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
-   '(browse-kill-ring magit paredit sesman spinner queue parseedn flycheck-joker flycheck loccur moody minions resize-window company projectile neotree crosshairs smart-mode-line which-key visual-regexp-steroids pcre2el unfill auto-compile use-package))
+   '(undo-tree all-the-icons rainbow-delimiters browse-kill-ring magit paredit sesman spinner queue parseedn flycheck-joker flycheck loccur moody minions resize-window company projectile neotree crosshairs smart-mode-line which-key visual-regexp-steroids pcre2el unfill auto-compile use-package))
  '(read-buffer-completion-ignore-case t)
  '(read-file-name-completion-ignore-case t)
  '(safe-local-variable-values

@@ -69,6 +69,8 @@ pkill, etc."
   (resize-window-add-choice ?m (lambda () (resize-window--window-push))
                             "Push window state onto window stack"))
 
+(setq ring-bell-function 'ignore)
+
 (defun append-suffix (suffix phrases)
   "take SUFFIX and append it to each of the PHRASES."
   (mapcar #'(lambda (phrase) (concat (symbol-name phrase) suffix)) phrases))
@@ -173,6 +175,7 @@ pkill, etc."
   :hook
   (after-init . global-company-mode))
 
+(use-package all-the-icons)
 (use-package neotree
   :config
   (customize-set-variable 'neo-theme (if (display-graphic-p) 'icons 'arrow))
@@ -209,6 +212,16 @@ pkill, etc."
   (browse-kill-ring-default-keybindings)
   :bind
   ("s-y" . browse-kill-ring))
+
+(use-package undo-tree
+  :diminish undo-tree-mode
+  :init
+  (global-undo-tree-mode)
+  (setq undo-tree-visualizer-timestamps t)
+  (setq undo-tree-visualizer-diff t))
+
+(bind-key "C-+" 'text-scale-increase)
+(bind-key "C--" 'text-scale-decrease)
 
 (use-package org
   :bind
