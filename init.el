@@ -266,7 +266,6 @@ pkill, etc."
 (use-package spinner)
 (use-package seq)
 (use-package sesman)
-
 (use-package flycheck-joker)
 
 (use-package clojure-mode
@@ -283,16 +282,19 @@ pkill, etc."
   (setq clojure-toplevel-inside-comment-form t)
   (setq cider-font-lock-dynamically t)
   (setq cider-show-error-buffer nil)
+  (setq cider-repl-display-help-banner nil)
   :bind (:map cider-repl-mode-map
          ("RET" . cider-repl-newline-and-indent)
-         ("C-<return>" . cider-repl-return)))
+         ("C-j" . cider-repl-return)
+         :map paredit-mode-map
+         ("C-j" . cider-repl-return)))
 
 (defvar my-lisps '(clojure emacs-lisp cider-repl))
 ;; geiser geiser-repl racket scheme slime repl
 
 (defun standard-lisp-environment ()
-;;  (paredit-mode 1)
-;;  (rainbow-delimiters-mode 1)
+  (paredit-mode 1)
+  (rainbow-delimiters-mode 1)
   (eldoc-mode 1))
 
 (hook-up-modes my-lisps 'standard-lisp-environment)

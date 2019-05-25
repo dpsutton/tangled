@@ -496,7 +496,7 @@ This seems quite powerful but I never think to use it. Need to read the help men
 - paredit
 
 #+BEGIN_SRC emacs-lisp
-  (use-package paredit)
+    (use-package paredit)
 #+END_SRC
 
 - rainbow delimiters mode
@@ -537,29 +537,34 @@ Get the dependencies for cider
   (use-package spinner)
   (use-package seq)
   (use-package sesman)
+  (use-package flycheck-joker)
 #+END_SRC
+
+
+Clojure mode and CIDER are dev versions locally
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package flycheck-joker)
+      (use-package clojure-mode
+        :load-path "~/projects/dev/clojure-mode"
+        :config
+        (setq clojure-indent-style 'align-arguments))
 
-  (use-package clojure-mode
-    :load-path "~/projects/dev/clojure-mode"
-    :config
-    (setq clojure-indent-style 'align-arguments))
-
-  (use-package cider
-    :load-path "~/projects/dev/cider"
-    :config
-    (setq cider-invert-insert-eval-p t)
-    (setq cider-switch-to-repl-after-insert-p nil)
-    (setq cider-switch-to-repl-on-insert-p nil)
-    (setq clojure-toplevel-inside-comment-form t)
-    (setq cider-font-lock-dynamically t)
-    (setq cider-show-error-buffer nil)
-    :bind (:map cider-repl-mode-map
-           ("RET" . cider-repl-newline-and-indent)
-           ("C-<return>" . cider-repl-return)))
+      (use-package cider
+        :load-path "~/projects/dev/cider"
+        :config
+        (setq cider-invert-insert-eval-p t)
+        (setq cider-switch-to-repl-after-insert-p nil)
+        (setq cider-switch-to-repl-on-insert-p nil)
+        (setq clojure-toplevel-inside-comment-form t)
+        (setq cider-font-lock-dynamically t)
+        (setq cider-show-error-buffer nil)
+        (setq cider-repl-display-help-banner nil)
+        :bind (:map cider-repl-mode-map
+               ("RET" . cider-repl-newline-and-indent)
+               ("C-j" . cider-repl-return)
+               :map paredit-mode-map
+               ("C-j" . cider-repl-return)))
 #+END_SRC
 
 ** lisps
@@ -573,8 +578,8 @@ define some standard environment for all lisps
 
 #+BEGIN_SRC emacs-lisp
   (defun standard-lisp-environment ()
-  ;;  (paredit-mode 1)
-  ;;  (rainbow-delimiters-mode 1)
+    (paredit-mode 1)
+    (rainbow-delimiters-mode 1)
     (eldoc-mode 1))
 
   (hook-up-modes my-lisps 'standard-lisp-environment)
