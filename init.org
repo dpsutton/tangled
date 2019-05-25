@@ -404,6 +404,28 @@ Tab settings. No tabs inserted but tabs have a width of 8.
   (setq-default indent-tabs-mode nil)
   (setq tab-width 8)
 #+END_SRC
+
+** Copy/Paste related
+
+#+BEGIN_SRC emacs-lisp
+  (use-package browse-kill-ring
+    :config
+    (browse-kill-ring-default-keybindings)
+    :bind
+    ("s-y" . browse-kill-ring))
+#+END_SRC
+
+* Org
+
+** Initial setup
+
+Org is lovely except i prefer my =resize-window= command at =C-c ;= instead of the toggle comment command.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :bind
+    ([remap org-toggle-comment] . resize-window))
+#+END_SRC
 * Searching
 
 ** Ibuffer

@@ -204,6 +204,16 @@ pkill, etc."
 (setq-default indent-tabs-mode nil)
 (setq tab-width 8)
 
+(use-package browse-kill-ring
+  :config
+  (browse-kill-ring-default-keybindings)
+  :bind
+  ("s-y" . browse-kill-ring))
+
+(use-package org
+  :bind
+  ([remap org-toggle-comment] . resize-window))
+
 (use-package ibuffer
   :bind
   ("C-x C-b" . ibuffer))
