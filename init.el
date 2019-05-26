@@ -60,6 +60,7 @@ pkill, etc."
   (add-hook 'org-mode-hook
             (lambda ()
               (bind-key "C-c ;" 'resize-window org-mode-map)))
+  (setq resize-window-swap-capital-and-lowercase-behavior t)
   (resize-window-add-choice ?l #'ivy-switch-buffer "Switch buffers with ivy")
   (resize-window-add-choice ?a #'counsel-git "Search git files")
   (resize-window-add-choice ?h (lambda () (dired "~/projects/clojure"))
