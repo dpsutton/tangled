@@ -117,22 +117,24 @@ This variable tells Emacs to prefer the =.el= file if it's newer, even if there 
 - use resize-window
 
 #+BEGIN_SRC emacs-lisp
-  (use-package resize-window
-    :bind
-    ("C-c ;" . resize-window)
-    ("C-c C-;" . resize-window)
-    :config
-    (add-hook 'org-mode-hook
-              (lambda ()
-                (bind-key "C-c ;" 'resize-window org-mode-map)))
-    (resize-window-add-choice ?h (lambda () (dired "~/projects/clojure"))
-                              "Visit the clojure directory")
-    (resize-window-add-choice ?u (lambda () (dired "~/ops/projects"))
-                              "Work projects")
-    (resize-window-add-choice ?d (lambda () (dired "~/projects/dev"))
-                              "Visit dev directoryq")
-    (resize-window-add-choice ?m (lambda () (resize-window--window-push))
-                              "Push window state onto window stack"))
+    (use-package resize-window
+      :bind
+      ("C-c ;" . resize-window)
+      ("C-c C-;" . resize-window)
+      :config
+      (add-hook 'org-mode-hook
+                (lambda ()
+                  (bind-key "C-c ;" 'resize-window org-mode-map)))
+      (resize-window-add-choice ?l #'ivy-switch-buffer "Switch buffers with ivy")
+      (resize-window-add-choice ?a #'counsel-git "Search git files")
+      (resize-window-add-choice ?h (lambda () (dired "~/projects/clojure"))
+                                "Visit the clojure directory")
+      (resize-window-add-choice ?u (lambda () (dired "~/ops/projects"))
+                                "Work projects")
+      (resize-window-add-choice ?d (lambda () (dired "~/projects/dev"))
+                                "Visit dev directoryq")
+      (resize-window-add-choice ?m (lambda () (resize-window--window-push))
+                                "Push window state onto window stack"))
 #+END_SRC
 
 - turn off the stupid system bell
@@ -489,6 +491,28 @@ This seems quite powerful but I never think to use it. Need to read the help men
     :bind ("C-o" . loccur-current))
 #+END_SRC
 
+** Ivy
+
+Enable. In my last config i saw that i included =(setq enable-recursive-minibuffers t)= but I don't remember why I did this. Perhaps will be necessary? Sure is nice to have literate docs.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :bind
+    ("C-c C-r" . ivy-resume)
+    :config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+   (use-package counsel
+      :bind
+      ("M-x" . counsel-M-x)
+      ("C-x C-f" . counsel-find-file)
+      ("C-x l" . counsel-locate)
+      ("C-S-o" . counsel-rhythmbox)
+      ("C-s" . swiper))
+#+END_SRC
 * Coding
 
 ** All

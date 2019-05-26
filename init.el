@@ -60,6 +60,8 @@ pkill, etc."
   (add-hook 'org-mode-hook
             (lambda ()
               (bind-key "C-c ;" 'resize-window org-mode-map)))
+  (resize-window-add-choice ?l #'ivy-switch-buffer "Switch buffers with ivy")
+  (resize-window-add-choice ?a #'counsel-git "Search git files")
   (resize-window-add-choice ?h (lambda () (dired "~/projects/clojure"))
                             "Visit the clojure directory")
   (resize-window-add-choice ?u (lambda () (dired "~/ops/projects"))
@@ -245,6 +247,21 @@ pkill, etc."
 
 (use-package loccur
   :bind ("C-o" . loccur-current))
+
+(use-package ivy
+  :bind
+  ("C-c C-r" . ivy-resume)
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t))
+
+(use-package counsel
+   :bind
+   ("M-x" . counsel-M-x)
+   ("C-x C-f" . counsel-find-file)
+   ("C-x l" . counsel-locate)
+   ("C-S-o" . counsel-rhythmbox)
+   ("C-s" . swiper))
 
 (use-package paredit)
 
