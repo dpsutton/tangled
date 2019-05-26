@@ -74,6 +74,8 @@ pkill, etc."
 
 (setq ring-bell-function 'ignore)
 
+(global-auto-revert-mode t)
+
 (defun append-suffix (suffix phrases)
   "take SUFFIX and append it to each of the PHRASES."
   (mapcar #'(lambda (phrase) (concat (symbol-name phrase) suffix)) phrases))
@@ -111,7 +113,8 @@ pkill, etc."
   :config
   (save-place-mode))
 
-(use-package imenu-anywhere)
+(use-package imenu-anywhere
+  :bind ("M-i" . imenu))
 
 (use-package smooth-scrolling
   :config

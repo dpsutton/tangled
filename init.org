@@ -143,6 +143,12 @@ This variable tells Emacs to prefer the =.el= file if it's newer, even if there 
 #+BEGIN_SRC emacs-lisp
   (setq ring-bell-function 'ignore)
 #+END_SRC
+
+- reload files when changed on disk
+
+#+BEGIN_SRC emacs-lisp
+  (global-auto-revert-mode t)
+#+END_SRC
 - Set up a way to hook up multiple modes
 
 #+BEGIN_SRC emacs-lisp
@@ -227,7 +233,8 @@ This variable tells Emacs to prefer the =.el= file if it's newer, even if there 
 - Provide mode-specific "bookmarks" - press =M-i= and you will be presented with a list of elements to which you can navigate - they can be headers in org-mode, function names in emacs-lisp, etc.
 
   #+begin_src emacs-lisp
-    (use-package imenu-anywhere)
+    (use-package imenu-anywhere
+      :bind ("M-i" . imenu))
   #+end_src
 
 - Smooth scrolling (line by line) instead of jumping by half-screens.
