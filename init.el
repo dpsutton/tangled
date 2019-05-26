@@ -248,6 +248,11 @@ pkill, etc."
 (use-package loccur
   :bind ("C-o" . loccur-current))
 
+(defun personal/ag-at-point ()
+  (interactive)
+  (let ((current-word (thing-at-point 'symbol)))
+    (counsel-ag current-word)))
+
 (use-package ivy
   :bind
   ("C-c C-r" . ivy-resume)
@@ -256,12 +261,13 @@ pkill, etc."
   (setq ivy-use-virtual-buffers t))
 
 (use-package counsel
-   :bind
-   ("M-x" . counsel-M-x)
-   ("C-x C-f" . counsel-find-file)
-   ("C-x l" . counsel-locate)
-   ("C-S-o" . counsel-rhythmbox)
-   ("C-s" . swiper))
+  :bind
+  ("M-x" . counsel-M-x)
+  ("C-r" . personal/ag-at-point)
+  ("C-x C-f" . counsel-find-file)
+  ("C-x l" . counsel-locate)
+  ("C-S-o" . counsel-rhythmbox)
+  ("C-s" . swiper))
 
 (use-package paredit)
 
@@ -269,6 +275,8 @@ pkill, etc."
 
 (use-package magit
   :bind ("C-x g" . magit-status))
+
+(bind-key "C-c n" 'indent-region)
 
 (use-package eldoc
   :diminish

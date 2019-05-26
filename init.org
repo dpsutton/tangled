@@ -495,6 +495,16 @@ This seems quite powerful but I never think to use it. Need to read the help men
 
 Enable. In my last config i saw that i included =(setq enable-recursive-minibuffers t)= but I don't remember why I did this. Perhaps will be necessary? Sure is nice to have literate docs.
 
+Define my own "thing at point" ag function
+
+#+BEGIN_SRC emacs-lisp
+  (defun personal/ag-at-point ()
+    (interactive)
+    (let ((current-word (thing-at-point 'symbol)))
+      (counsel-ag current-word)))
+
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
     :bind
@@ -505,17 +515,20 @@ Enable. In my last config i saw that i included =(setq enable-recursive-minibuff
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-   (use-package counsel
-      :bind
-      ("M-x" . counsel-M-x)
-      ("C-x C-f" . counsel-find-file)
-      ("C-x l" . counsel-locate)
-      ("C-S-o" . counsel-rhythmbox)
-      ("C-s" . swiper))
+  (use-package counsel
+    :bind
+    ("M-x" . counsel-M-x)
+    ("C-r" . personal/ag-at-point)
+    ("C-x C-f" . counsel-find-file)
+    ("C-x l" . counsel-locate)
+    ("C-S-o" . counsel-rhythmbox)
+    ("C-s" . swiper))
 #+END_SRC
 * Coding
 
 ** All
+
+*** Standard packages
 
 - paredit
 
@@ -536,6 +549,13 @@ Enable. In my last config i saw that i included =(setq enable-recursive-minibuff
     :bind ("C-x g" . magit-status))
 #+END_SRC
 
+*** Keybindings
+
+Set indent region to =c-c n=
+
+#+BEGIN_SRC emacs-lisp
+  (bind-key "C-c n" 'indent-region)
+#+END_SRC
 *** eldoc
 
 #+BEGIN_SRC emacs-lisp
