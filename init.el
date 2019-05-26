@@ -308,10 +308,13 @@ pkill, etc."
   (setq cider-font-lock-dynamically t)
   (setq cider-show-error-buffer nil)
   (setq cider-repl-display-help-banner nil)
-  :bind (:map cider-repl-mode-map
+  (setq cider-repl-pop-to-buffer-on-connect 'display-only)
+  :bind (:map
+         cider-repl-mode-map
          ("RET" . cider-repl-newline-and-indent)
          ("C-j" . cider-repl-return)
-         :map paredit-mode-map
+         :map
+         paredit-mode-map
          ("C-j" . cider-repl-return)))
 
 (defvar my-lisps '(clojure emacs-lisp cider-repl))
