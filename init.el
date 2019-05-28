@@ -301,6 +301,7 @@ pkill, etc."
 (use-package clojure-mode
   :load-path "~/projects/dev/clojure-mode"
   :config
+  (setq clojure-toplevel-inside-comment-form t)
   (setq clojure-indent-style 'align-arguments))
 
 (use-package cider
@@ -311,7 +312,6 @@ pkill, etc."
   (setq cider-invert-insert-eval-p t)
   (setq cider-switch-to-repl-after-insert-p nil)
   (setq cider-switch-to-repl-on-insert-p nil)
-  (setq clojure-toplevel-inside-comment-form t)
   (setq cider-font-lock-dynamically t)
   (setq cider-show-error-buffer nil)
   (setq cider-repl-display-help-banner nil)
