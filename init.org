@@ -322,6 +322,11 @@ Identify the location of the cursor:
     (global-hl-line-mode +1))
 #+END_SRC
 
+Turn off the quite ugly ui chrome
+
+#+BEGIN_SRC emacs-lisp
+  (tool-bar-mode -1)
+#+END_SRC
 
 *** Themes
 

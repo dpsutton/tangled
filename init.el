@@ -158,6 +158,8 @@ pkill, etc."
     :config
     (global-hl-line-mode +1))
 
+(tool-bar-mode -1)
+
 (use-package solarized-theme)
 (use-package darktooth-theme)
 (use-package kaolin-themes)
