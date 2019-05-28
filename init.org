@@ -422,6 +422,13 @@ Tab settings. No tabs inserted but tabs have a width of 8.
   (setq tab-width 8)
 #+END_SRC
 
+** Scrolling
+
+Scolling will recenter which leaves the repl prompt in the middle of the buffer just wasting tons of space. Prefer to have it just stay right above the bottom. Can do this with =scroll-conservatively= with a value greater than 100.
+
+#+BEGIN_SRC emacs-lisp
+  (setq scroll-conservatively 101)
+#+END_SRC
 ** Copy/Paste related
 
 #+BEGIN_SRC emacs-lisp

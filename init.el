@@ -214,6 +214,8 @@ pkill, etc."
 (setq-default indent-tabs-mode nil)
 (setq tab-width 8)
 
+(setq scroll-conservatively 101)
+
 (use-package browse-kill-ring
   :config
   (browse-kill-ring-default-keybindings)
