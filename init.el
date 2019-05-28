@@ -117,6 +117,7 @@ pkill, etc."
   :bind ("M-i" . imenu))
 
 (use-package smooth-scrolling
+  :disabled
   :config
   (smooth-scrolling-mode 1))
 
@@ -303,7 +304,9 @@ pkill, etc."
   (setq clojure-indent-style 'align-arguments))
 
 (use-package cider
-  :load-path "~/projects/dev/cider"
+  :load-path "~/projects/dev/cider/"
+  :init
+  (load "cider-autoloads" t t)
   :config
   (setq cider-invert-insert-eval-p t)
   (setq cider-switch-to-repl-after-insert-p nil)

@@ -241,6 +241,7 @@ This variable tells Emacs to prefer the =.el= file if it's newer, even if there 
 
   #+begin_src emacs-lisp
     (use-package smooth-scrolling
+      :disabled
       :config
       (smooth-scrolling-mode 1))
   #+end_src
@@ -603,7 +604,9 @@ Clojure mode and CIDER are dev versions locally
     (setq clojure-indent-style 'align-arguments))
 
   (use-package cider
-    :load-path "~/projects/dev/cider"
+    :load-path "~/projects/dev/cider/"
+    :init
+    (load "cider-autoloads" t t)
     :config
     (setq cider-invert-insert-eval-p t)
     (setq cider-switch-to-repl-after-insert-p nil)
