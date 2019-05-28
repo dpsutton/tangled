@@ -177,6 +177,8 @@ pkill, etc."
   :config
   (which-key-mode))
 
+(use-package hydra)
+
 (use-package company
   :diminish company-mode
   :hook
@@ -325,6 +327,20 @@ pkill, etc."
          :map
          paredit-mode-map
          ("C-j" . cider-repl-return)))
+
+(use-package lsp-mode
+  :init
+  (require 'lsp-clojure)
+  (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
+  (add-hook 'clojure-mode-hook #'lsp)
+  (add-hook 'clojurec-mode-hook #'lsp)
+  (add-hook 'clojurescript-mode-hook #'lsp))
+
+(use-package lsp-clojure-hydra
+  :load-path "~/projects/elisp/lsp-clojure-hydra"
+  :bind (:map
+         cider-mode-map
+         ("C-c C-l" . lsp-clojure-refactor-menu/body)))
 
 (defvar my-lisps '(clojure emacs-lisp cider-repl))
 ;; geiser geiser-repl racket scheme slime repl

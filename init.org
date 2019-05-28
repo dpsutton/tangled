@@ -358,6 +358,12 @@ Identify the location of the cursor:
       (which-key-mode))
   #+end_src
 
+- Hydra allows for easily configured menus
+
+#+BEGIN_SRC emacs-lisp
+  (use-package hydra)
+#+END_SRC
+
 *** Completion
 
 =company-mode= for completion
@@ -588,6 +594,8 @@ Set indent region to =c-c n=
 #+END_SRC
 ** Clojure
 
+*** CIDER
+
 Get the dependencies for cider
 
 #+BEGIN_SRC emacs-lisp
@@ -630,6 +638,31 @@ Clojure mode and CIDER are dev versions locally
            :map
            paredit-mode-map
            ("C-j" . cider-repl-return)))
+#+END_SRC
+
+*** LSP
+
+Use lsp-mode with the excellent lsp-clojure package.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode
+    :init
+    (require 'lsp-clojure)
+    (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
+    (add-hook 'clojure-mode-hook #'lsp)
+    (add-hook 'clojurec-mode-hook #'lsp)
+    (add-hook 'clojurescript-mode-hook #'lsp))
+
+#+END_SRC
+
+Use the hydra I cooked up recently
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-clojure-hydra
+    :load-path "~/projects/elisp/lsp-clojure-hydra"
+    :bind (:map
+           cider-mode-map
+           ("C-c C-l" . lsp-clojure-refactor-menu/body)))
 #+END_SRC
 
 ** lisps
