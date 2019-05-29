@@ -369,6 +369,23 @@ Turn off the quite ugly ui chrome
   (use-package hydra)
 #+END_SRC
 
+- crux
+
+very convenient package from bbatsov
+
+#+BEGIN_SRC emacs-lisp
+    (use-package crux
+      :bind
+      ([remap kill-whole-line] . crux-kill-whole-line)
+      ("C-c n" . crux-cleanup-buffer-or-region)
+      ("C-M-z" . crux-indent-defun)
+      ("C-c t" . crux-visit-term-buffer)
+      ("C-a" . crux-move-beginning-of-line)
+      :config
+      (require 'crux)
+      (crux-with-region-or-line kill-region))
+#+END_SRC
+
 *** Completion
 
 =company-mode= for completion
@@ -578,11 +595,6 @@ Define my own "thing at point" ag function
 
 *** Keybindings
 
-Set indent region to =c-c n=
-
-#+BEGIN_SRC emacs-lisp
-  (bind-key "C-c n" 'indent-region)
-#+END_SRC
 *** eldoc
 
 #+BEGIN_SRC emacs-lisp
@@ -646,6 +658,8 @@ Clojure mode and CIDER are dev versions locally
 #+END_SRC
 
 *** LSP
+indent-region-function
+
 
 Use lsp-mode with the excellent lsp-clojure package.
 
@@ -654,6 +668,8 @@ Use lsp-mode with the excellent lsp-clojure package.
     :init
     (require 'lsp-clojure)
     (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
+    (setq lsp-enable-indentation nil)
+    ;; (setq indent-region-function #'clojure-indent-function)
     (add-hook 'clojure-mode-hook #'lsp)
     (add-hook 'clojurec-mode-hook #'lsp)
     (add-hook 'clojurescript-mode-hook #'lsp))
@@ -665,9 +681,30 @@ Use the hydra I cooked up recently
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-clojure-hydra
     :load-path "~/projects/elisp/lsp-clojure-hydra"
-    :bind (:map
+    :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
+           :map
            cider-mode-map
            ("C-c C-l" . lsp-clojure-refactor-menu/body)))
+#+END_SRC
+
+*** Aclaimant Jack ins
+
+TODO: put behind flag that this is work computer
+TODO: add cljs jack in for cooper
+#+BEGIN_SRC emacs-lisp
+  (defmacro aclaimant-cider-connection (name&dir port)
+    `(defun ,(intern (format "aclaimant-jack-in-%s" (symbol-name name&dir))) ()
+       ,(format "Jack into project %s and open its base directory." name&dir)
+       (interactive)
+       (let ((dir ,(format "~/projects/aclaimant/acl/src/aclaimant/"
+                           (symbol-name name&dir))))
+        (cider-connect (list :host "local.aclaimant.com" :port ,port
+                             :project-dir dir)))))
+
+  (aclaimant-cider-connection service 7000)
+  (aclaimant-cider-connection jobs 7001)
+  (aclaimant-cider-connection alerter 7002)
+  (aclaimant-cider-connection twilio 7004)
 #+END_SRC
 
 ** lisps

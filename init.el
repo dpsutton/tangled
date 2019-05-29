@@ -181,6 +181,17 @@ pkill, etc."
 
 (use-package hydra)
 
+(use-package crux
+  :bind
+  ([remap kill-whole-line] . crux-kill-whole-line)
+  ("C-c n" . crux-cleanup-buffer-or-region)
+  ("C-M-z" . crux-indent-defun)
+  ("C-c t" . crux-visit-term-buffer)
+  ("C-a" . crux-move-beginning-of-line)
+  :config
+  (require 'crux)
+  (crux-with-region-or-line kill-region))
+
 (use-package company
   :diminish company-mode
   :hook
@@ -287,8 +298,6 @@ pkill, etc."
 (use-package magit
   :bind ("C-x g" . magit-status))
 
-(bind-key "C-c n" 'indent-region)
-
 (use-package eldoc
   :diminish
   :hook
@@ -334,15 +343,32 @@ pkill, etc."
   :init
   (require 'lsp-clojure)
   (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
+  (setq lsp-enable-indentation nil)
+  ;; (setq indent-region-function #'clojure-indent-function)
   (add-hook 'clojure-mode-hook #'lsp)
   (add-hook 'clojurec-mode-hook #'lsp)
   (add-hook 'clojurescript-mode-hook #'lsp))
 
 (use-package lsp-clojure-hydra
   :load-path "~/projects/elisp/lsp-clojure-hydra"
-  :bind (:map
+  :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
+         :map
          cider-mode-map
          ("C-c C-l" . lsp-clojure-refactor-menu/body)))
+
+(defmacro aclaimant-cider-connection (name&dir port)
+  `(defun ,(intern (format "aclaimant-jack-in-%s" (symbol-name name&dir))) ()
+     ,(format "Jack into project %s and open its base directory." name&dir)
+     (interactive)
+     (let ((dir ,(format "~/projects/aclaimant/acl/src/aclaimant/"
+                         (symbol-name name&dir))))
+      (cider-connect (list :host "local.aclaimant.com" :port ,port
+                           :project-dir dir)))))
+
+(aclaimant-cider-connection service 7000)
+(aclaimant-cider-connection jobs 7001)
+(aclaimant-cider-connection alerter 7002)
+(aclaimant-cider-connection twilio 7004)
 
 (defvar my-lisps '(clojure emacs-lisp cider-repl))
 ;; geiser geiser-repl racket scheme slime repl
