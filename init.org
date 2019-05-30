@@ -613,6 +613,25 @@ Define my own "thing at point" ag function
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck)
 #+END_SRC
+
+** Lisps
+
+Standard lisp editing environment
+#+BEGIN_SRC emacs-lisp
+  (defun standard-lisp-environment ()
+    (paredit-mode 1)
+    (rainbow-delimiters-mode 1)
+    (eldoc-mode 1))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defconst personal/my-lisps '(clojure lisp emacs-lisp cider-repl
+                                        ;; geiser geiser-repl racket scheme slime repl
+                                        ))
+
+  (hook-up-modes personal/my-lisps #'standard-lisp-environment)
+
+#+END_SRC
 ** Clojure
 
 *** CIDER

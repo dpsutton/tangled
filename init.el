@@ -306,6 +306,17 @@ pkill, etc."
 
 (use-package flycheck)
 
+(defun standard-lisp-environment ()
+  (paredit-mode 1)
+  (rainbow-delimiters-mode 1)
+  (eldoc-mode 1))
+
+(defconst personal/my-lisps '(clojure lisp emacs-lisp cider-repl
+                                      ;; geiser geiser-repl racket scheme slime repl
+                                      ))
+
+(hook-up-modes personal/my-lisps #'standard-lisp-environment)
+
 (use-package parseedn)
 (use-package pkg-info)
 (use-package queue)
