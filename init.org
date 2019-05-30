@@ -467,6 +467,11 @@ Scolling will recenter which leaves the repl prompt in the middle of the buffer 
     ("s-y" . browse-kill-ring))
 #+END_SRC
 
+Allow for pasting over things
+
+#+BEGIN_SRC emacs-lisp
+  (delete-selection-mode 1)
+#+END_SRC
 ** Undo
 
 Use undo tree

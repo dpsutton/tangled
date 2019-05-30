@@ -237,6 +237,8 @@ pkill, etc."
   :bind
   ("s-y" . browse-kill-ring))
 
+(delete-selection-mode 1)
+
 (use-package undo-tree
   :diminish undo-tree-mode
   :init
