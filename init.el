@@ -53,6 +53,7 @@ pkill, etc."
   (kill-emacs))
 
 (use-package resize-window
+  :demand t
   :bind
   ("C-c ;" . resize-window)
   ("C-c C-;" . resize-window)

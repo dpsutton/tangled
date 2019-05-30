@@ -118,6 +118,7 @@ This variable tells Emacs to prefer the =.el= file if it's newer, even if there 
 
 #+BEGIN_SRC emacs-lisp
   (use-package resize-window
+    :demand t
     :bind
     ("C-c ;" . resize-window)
     ("C-c C-;" . resize-window)
