@@ -131,8 +131,6 @@ This variable tells Emacs to prefer the =.el= file if it's newer, even if there 
     (resize-window-add-choice ?a #'counsel-git "Search git files")
     (resize-window-add-choice ?h (lambda () (dired "~/projects/clojure"))
                               "Visit the clojure directory")
-    (resize-window-add-choice ?u (lambda () (dired "~/ops/projects"))
-                              "Work projects")
     (resize-window-add-choice ?d (lambda () (dired "~/projects/dev"))
                               "Visit dev directoryq")
     (resize-window-add-choice ?m (lambda () (resize-window--window-push))
@@ -693,40 +691,44 @@ Use the hydra I cooked up recently
            ("C-c C-l" . lsp-clojure-refactor-menu/body)))
 #+END_SRC
 
-*** Aclaimant Jack ins
+* Work
 
-TODO: put behind flag that this is work computer
-TODO: add cljs jack in for cooper
+Var to check that we are on the work machine
 #+BEGIN_SRC emacs-lisp
-  (defmacro aclaimant-cider-connection (name&dir port)
-    `(defun ,(intern (format "aclaimant-jack-in-%s" (symbol-name name&dir))) ()
-       ,(format "Jack into project %s and open its base directory." name&dir)
-       (interactive)
-       (let ((dir ,(format "~/projects/aclaimant/acl/src/aclaimant/"
-                           (symbol-name name&dir))))
-        (cider-connect (list :host "local.aclaimant.com" :port ,port
-                             :project-dir dir)))))
-
-  (aclaimant-cider-connection service 7000)
-  (aclaimant-cider-connection jobs 7001)
-  (aclaimant-cider-connection alerter 7002)
-  (aclaimant-cider-connection twilio 7004)
+  (defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
 #+END_SRC
-
-** lisps
-
-define some standard environment for all lisps
+** Connect to running services
 
 #+BEGIN_SRC emacs-lisp
-(defvar my-lisps '(clojure emacs-lisp cider-repl))
-;; geiser geiser-repl racket scheme slime repl
-#+END_SRC
+  (when personal/work-machine
+    (defmacro aclaimant-cider-connection (name&dir port)
+      `(defun ,(intern (format "aclaimant-jack-in-%s" (symbol-name name&dir))) ()
+         ,(format "Jack into project %s and open its base directory." name&dir)
+         (interactive)
+         (let ((dir ,(format "~/projects/aclaimant/acl/src/aclaimant/"
+                             (symbol-name name&dir))))
+           (cider-connect (list :host "local.aclaimant.com" :port ,port
+                                :project-dir dir)))))
 
-#+BEGIN_SRC emacs-lisp
-  (defun standard-lisp-environment ()
-    (paredit-mode 1)
-    (rainbow-delimiters-mode 1)
-    (eldoc-mode 1))
+    (defun personal/aclaimant-connect (name&dir host port options)
+      (let ((dir (format "~/projects/aclaimant/acl/src/aclaimant/" (symbol-name name&dir))))
+        (cider-connect (append (list :host host :port port
+                                     :project-dir dir)
+                               options))))
 
-  (hook-up-modes my-lisps 'standard-lisp-environment)
+    (aclaimant-cider-connection service 7000)
+    (aclaimant-cider-connection jobs 7001)
+    (aclaimant-cider-connection alerter 7002)
+    (aclaimant-cider-connection twilio 7004)
+
+    (defun aclaimant-jack-in-dashboard ()
+      (interactive)
+      (personal/aclaimant-connect 'dashboard
+                                  "localhost"
+                                  7888
+                                  (list :cljs-repl-type 'figwheel-connected)))
+
+    (resize-window-add-choice ?u (lambda () (dired "~/projects/aclaimant/acl"))
+                              "Work projects"))
+
 #+END_SRC

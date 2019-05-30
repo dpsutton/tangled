@@ -66,8 +66,6 @@ pkill, etc."
   (resize-window-add-choice ?a #'counsel-git "Search git files")
   (resize-window-add-choice ?h (lambda () (dired "~/projects/clojure"))
                             "Visit the clojure directory")
-  (resize-window-add-choice ?u (lambda () (dired "~/ops/projects"))
-                            "Work projects")
   (resize-window-add-choice ?d (lambda () (dired "~/projects/dev"))
                             "Visit dev directoryq")
   (resize-window-add-choice ?m (lambda () (resize-window--window-push))
@@ -359,26 +357,35 @@ pkill, etc."
          cider-mode-map
          ("C-c C-l" . lsp-clojure-refactor-menu/body)))
 
-(defmacro aclaimant-cider-connection (name&dir port)
-  `(defun ,(intern (format "aclaimant-jack-in-%s" (symbol-name name&dir))) ()
-     ,(format "Jack into project %s and open its base directory." name&dir)
-     (interactive)
-     (let ((dir ,(format "~/projects/aclaimant/acl/src/aclaimant/"
-                         (symbol-name name&dir))))
-      (cider-connect (list :host "local.aclaimant.com" :port ,port
-                           :project-dir dir)))))
+(defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
 
-(aclaimant-cider-connection service 7000)
-(aclaimant-cider-connection jobs 7001)
-(aclaimant-cider-connection alerter 7002)
-(aclaimant-cider-connection twilio 7004)
+(when personal/work-machine
+  (defmacro aclaimant-cider-connection (name&dir port)
+    `(defun ,(intern (format "aclaimant-jack-in-%s" (symbol-name name&dir))) ()
+       ,(format "Jack into project %s and open its base directory." name&dir)
+       (interactive)
+       (let ((dir ,(format "~/projects/aclaimant/acl/src/aclaimant/"
+                           (symbol-name name&dir))))
+         (cider-connect (list :host "local.aclaimant.com" :port ,port
+                              :project-dir dir)))))
 
-(defvar my-lisps '(clojure emacs-lisp cider-repl))
-;; geiser geiser-repl racket scheme slime repl
+  (defun personal/aclaimant-connect (name&dir host port options)
+    (let ((dir (format "~/projects/aclaimant/acl/src/aclaimant/" (symbol-name name&dir))))
+      (cider-connect (append (list :host host :port port
+                                   :project-dir dir)
+                             options))))
 
-(defun standard-lisp-environment ()
-  (paredit-mode 1)
-  (rainbow-delimiters-mode 1)
-  (eldoc-mode 1))
+  (aclaimant-cider-connection service 7000)
+  (aclaimant-cider-connection jobs 7001)
+  (aclaimant-cider-connection alerter 7002)
+  (aclaimant-cider-connection twilio 7004)
 
-(hook-up-modes my-lisps 'standard-lisp-environment)
+  (defun aclaimant-jack-in-dashboard ()
+    (interactive)
+    (personal/aclaimant-connect 'dashboard
+                                "localhost"
+                                7888
+                                (list :cljs-repl-type 'figwheel-connected)))
+
+  (resize-window-add-choice ?u (lambda () (dired "~/projects/aclaimant/acl"))
+                            "Work projects"))
