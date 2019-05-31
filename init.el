@@ -357,13 +357,15 @@ pkill, etc."
 
 (use-package lsp-mode
   :init
-  (require 'lsp-clojure)
   (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
   (setq lsp-enable-indentation nil)
   ;; (setq indent-region-function #'clojure-indent-function)
   (add-hook 'clojure-mode-hook #'lsp)
   (add-hook 'clojurec-mode-hook #'lsp)
-  (add-hook 'clojurescript-mode-hook #'lsp))
+  (add-hook 'clojurescript-mode-hook #'lsp)
+  :config
+  (require 'lsp-clojure)
+  (require 'lsp-clojure-hydra))
 
 (use-package lsp-clojure-hydra
   :load-path "~/projects/elisp/lsp-clojure-hydra"
