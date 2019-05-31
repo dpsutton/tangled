@@ -460,6 +460,7 @@ Scolling will recenter which leaves the repl prompt in the middle of the buffer 
 
 #+BEGIN_SRC emacs-lisp
   (use-package browse-kill-ring
+    :demand t
     :config
     (browse-kill-ring-default-keybindings)
     :bind
@@ -632,6 +633,12 @@ Standard lisp editing environment
   (hook-up-modes personal/my-lisps #'standard-lisp-environment)
 
 #+END_SRC
+** Shells
+
+#+BEGIN_SRC emacs-lisp
+  (bind-key "C-x m" 'eshell)
+  (bind-key "C-x M" (lambda () (interactive) (eshell t)))
+#+END_SRC
 ** Clojure
 
 *** CIDER
@@ -742,10 +749,10 @@ Var to check that we are on the work machine
 
     (defun aclaimant-jack-in-dashboard ()
       (interactive)
-      (personal/aclaimant-connect 'dashboard
-                                  "localhost"
-                                  7888
-                                  (list :cljs-repl-type 'figwheel-connected)))
+      (cider-connect-cljs (list :host "localhost"
+                                :port 7888
+                                :cljs-repl-type 'figwheel-connected
+                                'project-dir "~/projects/aclaimant/acl")))
 
     (resize-window-add-choice ?u (lambda () (dired "~/projects/aclaimant/acl"))
                               "Work projects"))

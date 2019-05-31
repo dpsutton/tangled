@@ -231,6 +231,7 @@ pkill, etc."
 (setq scroll-conservatively 101)
 
 (use-package browse-kill-ring
+  :demand t
   :config
   (browse-kill-ring-default-keybindings)
   :bind
@@ -316,6 +317,9 @@ pkill, etc."
                                       ))
 
 (hook-up-modes personal/my-lisps #'standard-lisp-environment)
+
+(bind-key "C-x m" 'eshell)
+(bind-key "C-x M" (lambda () (interactive) (eshell t)))
 
 (use-package parseedn)
 (use-package pkg-info)
