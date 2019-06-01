@@ -709,20 +709,20 @@ Use lsp-mode with the excellent lsp-clojure package.
     (add-hook 'clojurec-mode-hook #'lsp)
     (add-hook 'clojurescript-mode-hook #'lsp)
     :config
-    (require 'lsp-clojure)
-    (require 'lsp-clojure-hydra))
+    (require 'lsp-clojure))
 
 #+END_SRC
 
 Use the hydra I cooked up recently
 
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-clojure-hydra
-    :load-path "~/projects/elisp/lsp-clojure-hydra"
-    :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
-           :map
-           cider-mode-map
-           ("C-c C-l" . lsp-clojure-refactor-menu/body)))
+    (use-package lsp-clojure-hydra
+      :after (lsp-mode lsp-mode cider)
+      :load-path "~/projects/elisp/lsp-clojure-hydra"
+      :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
+             :map
+             cider-mode-map
+             ("C-c C-l" . lsp-clojure-refactor-menu/body)))
 #+END_SRC
 
 * Work

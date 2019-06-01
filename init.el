@@ -366,10 +366,10 @@ pkill, etc."
   (add-hook 'clojurec-mode-hook #'lsp)
   (add-hook 'clojurescript-mode-hook #'lsp)
   :config
-  (require 'lsp-clojure)
-  (require 'lsp-clojure-hydra))
+  (require 'lsp-clojure))
 
 (use-package lsp-clojure-hydra
+  :after (lsp-mode lsp-mode cider)
   :load-path "~/projects/elisp/lsp-clojure-hydra"
   :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
          :map
@@ -401,10 +401,10 @@ pkill, etc."
 
   (defun aclaimant-jack-in-dashboard ()
     (interactive)
-    (personal/aclaimant-connect 'dashboard
-                                "localhost"
-                                7888
-                                (list :cljs-repl-type 'figwheel-connected)))
+    (cider-connect-cljs (list :host "localhost"
+                              :port 7888
+                              :cljs-repl-type 'figwheel-connected
+                              'project-dir "~/projects/aclaimant/acl")))
 
   (resize-window-add-choice ?u (lambda () (dired "~/projects/aclaimant/acl"))
                             "Work projects"))
