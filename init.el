@@ -217,6 +217,8 @@ pkill, etc."
   :bind
   ([f8] . neotree-project-dir))
 
+(set-face-attribute 'default nil :height 170)
+
 (defvar my-text-environments '(org markdown))
 
 (defun standard-text-environment ()

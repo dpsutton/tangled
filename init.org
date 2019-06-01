@@ -421,6 +421,12 @@ very convenient package from bbatsov
     ([f8] . neotree-project-dir))
 #+end_src
 
+** Font size
+
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'default nil :height 170)
+#+END_SRC
+
 * Text Editing Settings
 
 ** Text environment hook
