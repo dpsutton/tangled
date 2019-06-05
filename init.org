@@ -424,7 +424,11 @@ very convenient package from bbatsov
 ** Font size
 
 #+BEGIN_SRC emacs-lisp
-  (set-face-attribute 'default nil :height 170)
+  (defun personal/set-font ()
+    (interactive)
+    (set-face-attribute 'default nil :height 170))
+
+  (personal/set-font)
 #+END_SRC
 
 * Text Editing Settings
