@@ -217,12 +217,6 @@ pkill, etc."
   :bind
   ([f8] . neotree-project-dir))
 
-(defun personal/set-font ()
-  (interactive)
-  (set-face-attribute 'default nil :height 170))
-
-(personal/set-font)
-
 (defvar my-text-environments '(org markdown))
 
 (defun standard-text-environment ()
@@ -412,3 +406,19 @@ pkill, etc."
 
   (resize-window-add-choice ?u (lambda () (dired "~/projects/aclaimant/acl"))
                             "Work projects"))
+
+(when personal/work-machine
+  (defun personal/set-font ()
+    (interactive)
+    (set-face-attribute 'default nil :height 130))
+
+  (personal/set-font))
+
+(defconst personal/linux-machine (string= system-name "fedora"))
+
+(when personal/linux-machine
+  (defun personal/set-font ()
+    (interactive)
+    (set-face-attribute 'default nil :height 170))
+
+  (personal/set-font))

@@ -421,15 +421,6 @@ very convenient package from bbatsov
     ([f8] . neotree-project-dir))
 #+end_src
 
-** Font size
-
-#+BEGIN_SRC emacs-lisp
-  (defun personal/set-font ()
-    (interactive)
-    (set-face-attribute 'default nil :height 170))
-
-  (personal/set-font)
-#+END_SRC
 
 * Text Editing Settings
 
@@ -769,4 +760,36 @@ Var to check that we are on the work machine
     (resize-window-add-choice ?u (lambda () (dired "~/projects/aclaimant/acl"))
                               "Work projects"))
 
+#+END_SRC
+** Font size
+
+#+BEGIN_SRC emacs-lisp
+  (when personal/work-machine
+    (defun personal/set-font ()
+      (interactive)
+      (set-face-attribute 'default nil :height 130))
+
+    (personal/set-font))
+#+END_SRC
+** TODO
+* Linux machine
+
+are we on that machine?
+
+#+BEGIN_SRC emacs-lisp
+  (defconst personal/linux-machine (string= system-name "fedora"))
+#+END_SRC
+
+
+** Font size
+
+thinkpad machine has a 2500 screen and needs "manual" scaling. Work machine scales better. Year of the linux desktop
+
+#+BEGIN_SRC emacs-lisp
+  (when personal/linux-machine
+    (defun personal/set-font ()
+      (interactive)
+      (set-face-attribute 'default nil :height 170))
+
+    (personal/set-font))
 #+END_SRC
