@@ -416,7 +416,7 @@ pkill, etc."
 (when personal/work-machine
   (defun personal/set-font ()
     (interactive)
-    (set-face-attribute 'default nil :height 130))
+    (set-face-attribute 'default nil :height 150))
 
   (personal/set-font))
 
@@ -427,4 +427,5 @@ pkill, etc."
     (interactive)
     (set-face-attribute 'default nil :height 170)))
 
+(set-frame-font "Fira Code")
 (run-with-idle-timer 0 nil #'personal/set-font)

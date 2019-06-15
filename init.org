@@ -778,7 +778,7 @@ Var to check that we are on the work machine
   (when personal/work-machine
     (defun personal/set-font ()
       (interactive)
-      (set-face-attribute 'default nil :height 130))
+      (set-face-attribute 'default nil :height 150))
 
     (personal/set-font))
 #+END_SRC
@@ -809,5 +809,8 @@ thinkpad machine has a 2500 screen and needs "manual" scaling. Work machine scal
 For some reason this was getting lost in the startup shenanigans so we set it once things settle down.
 
 #+BEGIN_SRC emacs-lisp
+  (set-frame-font "Fira Code")
   (run-with-idle-timer 0 nil #'personal/set-font)
 #+END_SRC
+
+*** TODO
