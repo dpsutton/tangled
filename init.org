@@ -722,13 +722,13 @@ Use lsp-mode with the excellent lsp-clojure package.
 Use the hydra I cooked up recently
 
 #+BEGIN_SRC emacs-lisp
-    (use-package lsp-clojure-hydra
-      :after (lsp-mode lsp-mode cider)
-      :load-path "~/projects/elisp/lsp-clojure-hydra"
-      :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
-             :map
-             cider-mode-map
-             ("C-c C-l" . lsp-clojure-refactor-menu/body)))
+  (use-package lsp-clojure-hydra
+    :after (lsp-mode lsp-mode cider)
+    :load-path "~/projects/elisp/lsp-clojure-hydra"
+    :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
+           :map
+           cider-mode-map
+           ("C-c C-l" . lsp-clojure-refactor-menu/body)))
 #+END_SRC
 * Machine Configs
 ** Work
