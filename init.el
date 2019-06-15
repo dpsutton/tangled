@@ -321,6 +321,12 @@ pkill, etc."
 (bind-key "C-x m" 'eshell)
 (bind-key "C-x M" (lambda () (interactive) (eshell t)))
 
+(use-package yasnippet
+  :demand t
+  :config
+  (yas-global-mode 1)
+  (setq yas-snippet-dirs (list "~/.emacs.d/snippets")))
+
 (use-package parseedn)
 (use-package pkg-info)
 (use-package queue)
@@ -419,6 +425,6 @@ pkill, etc."
 (when personal/linux-machine
   (defun personal/set-font ()
     (interactive)
-    (set-face-attribute 'default nil :height 170))
+    (set-face-attribute 'default nil :height 170)))
 
-  (personal/set-font))
+(run-with-idle-timer 0 nil #'personal/set-font)

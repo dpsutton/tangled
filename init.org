@@ -640,6 +640,17 @@ Standard lisp editing environment
   (bind-key "C-x m" 'eshell)
   (bind-key "C-x M" (lambda () (interactive) (eshell t)))
 #+END_SRC
+** Yasnippet
+
+Need yasnippet for lsp-mode. And why not. It's a good thing
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :demand t
+    :config
+    (yas-global-mode 1)
+    (setq yas-snippet-dirs (list "~/.emacs.d/snippets")))
+#+END_SRC
 ** Clojure
 
 *** CIDER
@@ -719,14 +730,14 @@ Use the hydra I cooked up recently
              cider-mode-map
              ("C-c C-l" . lsp-clojure-refactor-menu/body)))
 #+END_SRC
-
-* Work
+* Machine Configs
+** Work
 
 Var to check that we are on the work machine
 #+BEGIN_SRC emacs-lisp
   (defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
 #+END_SRC
-** Connect to running services
+*** Connect to running services
 
 #+BEGIN_SRC emacs-lisp
   (when personal/work-machine
@@ -761,7 +772,7 @@ Var to check that we are on the work machine
                               "Work projects"))
 
 #+END_SRC
-** Font size
+*** Font size
 
 #+BEGIN_SRC emacs-lisp
   (when personal/work-machine
@@ -771,8 +782,8 @@ Var to check that we are on the work machine
 
     (personal/set-font))
 #+END_SRC
-** TODO
-* Linux machine
+*** TODO
+** Linux machine
 
 are we on that machine?
 
@@ -781,7 +792,7 @@ are we on that machine?
 #+END_SRC
 
 
-** Font size
+*** Font size
 
 thinkpad machine has a 2500 screen and needs "manual" scaling. Work machine scales better. Year of the linux desktop
 
@@ -789,7 +800,14 @@ thinkpad machine has a 2500 screen and needs "manual" scaling. Work machine scal
   (when personal/linux-machine
     (defun personal/set-font ()
       (interactive)
-      (set-face-attribute 'default nil :height 170))
+      (set-face-attribute 'default nil :height 170)))
+#+END_SRC
+** Any
 
-    (personal/set-font))
+*** Set font
+
+For some reason this was getting lost in the startup shenanigans so we set it once things settle down.
+
+#+BEGIN_SRC emacs-lisp
+  (run-with-idle-timer 0 nil #'personal/set-font)
 #+END_SRC
