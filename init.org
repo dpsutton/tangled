@@ -788,7 +788,8 @@ Var to check that we are on the work machine
 set ligatures on work machine since its osx and its easy
 
 #+BEGIN_SRC emacs-lisp
-  (mac-auto-operator-composition-mode)
+  (when personal/work-machine
+    (mac-auto-operator-composition-mode))
 #+END_SRC
 ** Linux machine
 

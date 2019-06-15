@@ -420,7 +420,8 @@ pkill, etc."
 
   (personal/set-font))
 
-(mac-auto-operator-composition-mode)
+(when personal/work-machine
+  (mac-auto-operator-composition-mode))
 
 (defconst personal/linux-machine (string= system-name "fedora"))
 
