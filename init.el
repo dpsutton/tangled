@@ -193,8 +193,15 @@ pkill, etc."
 
 (use-package company
   :diminish company-mode
+  :bind ("TAB" . company-indent-or-complete-common)
   :hook
   (after-init . global-company-mode))
+
+(use-package company-quickhelp
+  :init (company-quickhelp-mode)
+  :config
+  (setq company-quickhelp-use-propertized-text t)
+  (setq company-quickhelp-delay 0.2))
 
 (use-package all-the-icons)
 (use-package neotree
@@ -353,6 +360,7 @@ pkill, etc."
   (setq cider-show-error-buffer nil)
   (setq cider-repl-display-help-banner nil)
   (setq cider-repl-pop-to-buffer-on-connect 'display-only)
+  (setq cider-repl-tab-command #'company-indent-or-complete-common)
   :bind (:map
          cider-repl-mode-map
          ("RET" . cider-repl-newline-and-indent)
