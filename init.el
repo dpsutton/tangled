@@ -195,7 +195,10 @@ pkill, etc."
   :diminish company-mode
   :bind ("TAB" . company-indent-or-complete-common)
   :hook
-  (after-init . global-company-mode))
+  (after-init . global-company-mode)
+  :config
+  (setq company-idle-delay 0.0)
+  (setq company-minimum-prefix-length 0))
 
 (use-package company-quickhelp
   :init (company-quickhelp-mode)

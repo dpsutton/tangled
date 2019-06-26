@@ -394,7 +394,10 @@ very convenient package from bbatsov
     :diminish company-mode
     :bind ("TAB" . company-indent-or-complete-common)
     :hook
-    (after-init . global-company-mode))
+    (after-init . global-company-mode)
+    :config
+    (setq company-idle-delay 0.0)
+    (setq company-minimum-prefix-length 0))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
