@@ -427,7 +427,7 @@ pkill, etc."
 (when personal/work-machine
   (defun personal/set-font ()
     (interactive)
-    (set-face-attribute 'default nil :height 130))
+    (set-face-attribute 'default nil :height 140))
 
   (personal/set-font))
 
