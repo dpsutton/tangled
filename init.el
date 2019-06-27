@@ -197,8 +197,8 @@ pkill, etc."
   :hook
   (after-init . global-company-mode)
   :config
-  (setq company-idle-delay 0.0)
-  (setq company-minimum-prefix-length 0))
+  (setq company-idle-delay 0.3)
+  (setq company-minimum-prefix-length 3))
 
 (use-package company-quickhelp
   :init (company-quickhelp-mode)
@@ -376,6 +376,7 @@ pkill, etc."
   :init
   (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
   (setq lsp-enable-indentation nil)
+  (setq lsp-enable-completion-at-point nil)
   ;; (setq indent-region-function #'clojure-indent-function)
   (add-hook 'clojure-mode-hook #'lsp)
   (add-hook 'clojurec-mode-hook #'lsp)

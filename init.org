@@ -396,8 +396,8 @@ very convenient package from bbatsov
     :hook
     (after-init . global-company-mode)
     :config
-    (setq company-idle-delay 0.0)
-    (setq company-minimum-prefix-length 0))
+    (setq company-idle-delay 0.3)
+    (setq company-minimum-prefix-length 3))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -723,13 +723,13 @@ Use lsp-mode with the excellent lsp-clojure package.
     :init
     (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
     (setq lsp-enable-indentation nil)
+    (setq lsp-enable-completion-at-point nil)
     ;; (setq indent-region-function #'clojure-indent-function)
     (add-hook 'clojure-mode-hook #'lsp)
     (add-hook 'clojurec-mode-hook #'lsp)
     (add-hook 'clojurescript-mode-hook #'lsp)
     :config
     (require 'lsp-clojure))
-
 #+END_SRC
 
 Use the hydra I cooked up recently
