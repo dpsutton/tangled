@@ -259,6 +259,17 @@ pkill, etc."
 (bind-key "C-+" 'text-scale-increase)
 (bind-key "C--" 'text-scale-decrease)
 
+(use-package pdf-tools
+  :demand t
+  :config
+  (require 'pdf-tools)
+  (require 'pdf-view)
+  :bind (:map pdf-view-mode-map
+              ("j" . pdf-view-next-line-or-next-page)
+              ("k" . pdf-view-previous-line-or-previous-page)
+              ("h" . image-backward-hscroll)
+              ("l" . image-forward-hscroll)))
+
 (use-package org
   :bind
   ([remap org-toggle-comment] . resize-window))
@@ -344,6 +355,7 @@ pkill, etc."
 (use-package seq)
 (use-package sesman)
 (use-package flycheck-joker)
+(use-package buttercup)
 
 (use-package clojure-mode
   :load-path "~/projects/dev/clojure-mode"
@@ -382,7 +394,10 @@ pkill, etc."
   (add-hook 'clojurec-mode-hook #'lsp)
   (add-hook 'clojurescript-mode-hook #'lsp)
   :config
-  (require 'lsp-clojure))
+  (require 'lsp-clojure)
+  (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
+  (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojure"))
+  (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript")))
 
 (use-package lsp-clojure-hydra
   :after (lsp-mode lsp-mode cider)
