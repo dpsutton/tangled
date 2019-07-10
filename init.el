@@ -407,6 +407,9 @@ pkill, etc."
          cider-mode-map
          ("C-c C-l" . lsp-clojure-refactor-menu/body)))
 
+(use-package rust-mode)
+(use-package racer)
+
 (defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
 
 (when personal/work-machine
