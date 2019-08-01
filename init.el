@@ -451,7 +451,13 @@ pkill, etc."
   (personal/set-font))
 
 (when personal/work-machine
-  (mac-auto-operator-composition-mode))
+  (use-package exec-path-from-shell
+    :demand t
+    :init
+    (exec-path-from-shell-initialize)))
+
+(setq mac-command-modifier 'meta)
+(global-display-line-numbers-mode +1)
 
 (defconst personal/linux-machine (string= system-name "fedora"))
 

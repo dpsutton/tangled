@@ -822,11 +822,21 @@ Var to check that we are on the work machine
 
 *** Ligatures
 
-set ligatures on work machine since its osx and its easy
+Switch away from ligatures hoping to diagnose some memory woes on osx. Need that sweet sweet shell though
 
 #+BEGIN_SRC emacs-lisp
   (when personal/work-machine
-    (mac-auto-operator-composition-mode))
+    (use-package exec-path-from-shell
+      :demand t
+      :init
+      (exec-path-from-shell-initialize)))
+#+END_SRC
+
+*** Random assorteds
+
+#+BEGIN_SRC emacs-lisp
+  (setq mac-command-modifier 'meta)
+  (global-display-line-numbers-mode +1)
 #+END_SRC
 ** Linux machine
 
