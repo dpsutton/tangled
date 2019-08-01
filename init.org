@@ -36,6 +36,7 @@ Optionally enable =debug-on-error= when diagnosing errors with the config file i
 #+end_src
 
 #+begin_src emacs-lisp
+  (setq personal/original-gc-threshold gc-cons-threshold)
   (setq gc-cons-threshold most-positive-fixnum)
 #+end_src
 
@@ -869,3 +870,11 @@ For some reason this was getting lost in the startup shenanigans so we set it on
 #+END_SRC
 
 *** TODO
+
+* Post
+
+** Restore gc
+
+#+BEGIN_SRC emacs-lisp
+  (setq gc-cons-threshold personal/original-gc-threshold)
+#+END_SRC

@@ -13,6 +13,7 @@
 
 ;;(setq debug-on-error t)
 
+(setq personal/original-gc-threshold gc-cons-threshold)
 (setq gc-cons-threshold most-positive-fixnum)
 
 (setq custom-file "~/.emacs.d/custom.el")
@@ -468,3 +469,5 @@ pkill, etc."
 
 (set-frame-font "Fira Code")
 (run-with-idle-timer 0 nil #'personal/set-font)
+
+(setq gc-cons-threshold personal/original-gc-threshold)
