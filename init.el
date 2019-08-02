@@ -411,6 +411,12 @@ pkill, etc."
 (use-package rust-mode)
 (use-package racer)
 
+(use-package haskell-mode)
+
+(use-package intero
+  :init
+  (add-hook 'haskell-mode-hook 'intero-mode))
+
 (defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
 
 (when personal/work-machine

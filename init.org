@@ -768,6 +768,17 @@ Use the hydra I cooked up recently
   (use-package rust-mode)
   (use-package racer)
 #+END_SRC
+** Haskell
+#+BEGIN_SRC emacs-lisp
+  (use-package haskell-mode)
+#+END_SRC
+install intero
+#+BEGIN_SRC emacs-lisp
+  (use-package intero
+    :init
+    (add-hook 'haskell-mode-hook 'intero-mode))
+
+#+END_SRC
 * Machine Configs
 ** Work
 
