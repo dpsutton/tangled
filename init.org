@@ -847,8 +847,9 @@ Switch away from ligatures hoping to diagnose some memory woes on osx. Need that
 *** Random assorteds
 
 #+BEGIN_SRC emacs-lisp
-  (setq mac-command-modifier 'meta)
-  (global-display-line-numbers-mode +1)
+  (when personal/work-machine
+    (setq mac-command-modifier 'meta)
+    (global-display-line-numbers-mode +1))
 #+END_SRC
 ** Linux machine
 

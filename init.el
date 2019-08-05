@@ -463,8 +463,9 @@ pkill, etc."
     :init
     (exec-path-from-shell-initialize)))
 
-(setq mac-command-modifier 'meta)
-(global-display-line-numbers-mode +1)
+(when personal/work-machine
+  (setq mac-command-modifier 'meta)
+  (global-display-line-numbers-mode +1))
 
 (defconst personal/linux-machine (string= system-name "fedora"))
 
