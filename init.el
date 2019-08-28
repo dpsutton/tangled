@@ -457,11 +457,10 @@ pkill, etc."
 
   (personal/set-font))
 
-(when personal/work-machine
-  (use-package exec-path-from-shell
-    :demand t
-    :init
-    (exec-path-from-shell-initialize)))
+(use-package exec-path-from-shell
+  :demand t
+  :init
+  (exec-path-from-shell-initialize))
 
 (when personal/work-machine
   (setq mac-command-modifier 'meta)
