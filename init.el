@@ -165,7 +165,7 @@ pkill, etc."
 (use-package kaolin-themes)
 (use-package sublime-themes)
 (use-package gruvbox-theme)
-(load-theme 'gruvbox)
+(load-theme 'brin)
 
 (use-package projectile
   :defer 2

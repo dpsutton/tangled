@@ -336,7 +336,7 @@ Turn off the quite ugly ui chrome
   (use-package kaolin-themes)
   (use-package sublime-themes)
   (use-package gruvbox-theme)
-  (load-theme 'gruvbox)
+  (load-theme 'brin)
 #+end_src
 
 
