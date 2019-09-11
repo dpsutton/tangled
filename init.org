@@ -768,6 +768,14 @@ Use the hydra I cooked up recently
   (use-package rust-mode)
   (use-package racer)
 #+END_SRC
+** Elm
+
+Packages for elm-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package elm-mode)
+  (use-package flycheck-elm)
+#+END_SRC
 ** Haskell
 #+BEGIN_SRC emacs-lisp
   (use-package haskell-mode)

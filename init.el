@@ -411,6 +411,9 @@ pkill, etc."
 (use-package rust-mode)
 (use-package racer)
 
+(use-package elm-mode)
+(use-package flycheck-elm)
+
 (use-package haskell-mode)
 
 (use-package intero
