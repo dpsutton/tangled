@@ -8,3 +8,4 @@ transient/
 .lsp-session*
 recentf
 url/
+custom.el
