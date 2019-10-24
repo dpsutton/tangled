@@ -101,6 +101,12 @@ This variable tells Emacs to prefer the =.el= file if it's newer, even if there 
 
 ** General
 
+- set dired listing settings
+
+#+BEGIN_SRC emacs-lisp
+  (setq dired-listing-switches "-alh")
+#+END_SRC
+
 - Start the Emacs server and define a shutdown function
 
 #+begin_src emacs-lisp

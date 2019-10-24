@@ -43,6 +43,8 @@
   :defer nil
   :config (auto-compile-on-load-mode))
 
+(setq dired-listing-switches "-alh")
+
 (server-start)
 
 (defun shutdown-server ()
