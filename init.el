@@ -166,8 +166,10 @@ pkill, etc."
 (use-package darktooth-theme)
 (use-package kaolin-themes)
 (use-package sublime-themes)
+
 (use-package gruvbox-theme)
 (load-theme 'brin)
+(setq hl-line-face '((t :background "#3d424d")))
 
 (use-package projectile
   :defer 2
