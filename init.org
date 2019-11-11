@@ -736,6 +736,23 @@ Clojure mode and CIDER are dev versions locally
            ("C-j" . cider-repl-return)))
 #+END_SRC
 
+****  tooltip for doc stuff
+#+BEGIN_SRC emacs-lisp
+  (use-package pos-tip)
+
+  (defun cider-tooltip-show ()
+    (interactive)
+    (if-let ((info (cider-var-info (thing-at-point 'symbol))))
+        (nrepl-dbind-response info (doc arglists-str name ns)
+          (pos-tip-show (format "%s : %s\n%s\n%s" ns (or name "") (or arglists-str "") (or doc ""))
+                        nil
+                        nil
+                        nil
+                        -1))
+      (message "info not found")))
+
+  (bind-key "C-c t" 'cider-tooltip-show)
+#+END_SRC
 *** LSP
 indent-region-function
 

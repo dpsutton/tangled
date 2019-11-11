@@ -389,6 +389,21 @@ pkill, etc."
          paredit-mode-map
          ("C-j" . cider-repl-return)))
 
+(use-package pos-tip)
+
+(defun cider-tooltip-show ()
+  (interactive)
+  (if-let ((info (cider-var-info (thing-at-point 'symbol))))
+      (nrepl-dbind-response info (doc arglists-str name ns)
+        (pos-tip-show (format "%s : %s\n%s\n%s" ns (or name "") (or arglists-str "") (or doc ""))
+                      nil
+                      nil
+                      nil
+                      -1))
+    (message "info not found")))
+
+(bind-key "C-c t" 'cider-tooltip-show)
+
 (use-package lsp-mode
   :init
   (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
