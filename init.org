@@ -890,7 +890,7 @@ Switch away from ligatures hoping to diagnose some memory woes on osx. Need that
 are we on that machine?
 
 #+BEGIN_SRC emacs-lisp
-  (defconst personal/linux-machine (string= system-name "fedora"))
+  (defconst personal/linux-machine (string= system-name "pop-os"))
 #+END_SRC
 
 
@@ -902,7 +902,7 @@ thinkpad machine has a 2500 screen and needs "manual" scaling. Work machine scal
   (when personal/linux-machine
     (defun personal/set-font ()
       (interactive)
-      (set-face-attribute 'default nil :height 170)))
+      (set-face-attribute 'default nil :height 130)))
 #+END_SRC
 ** Any
 

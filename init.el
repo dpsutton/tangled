@@ -490,12 +490,12 @@ pkill, etc."
   (setq mac-command-modifier 'meta)
   (global-display-line-numbers-mode +1))
 
-(defconst personal/linux-machine (string= system-name "fedora"))
+(defconst personal/linux-machine (string= system-name "pop-os"))
 
 (when personal/linux-machine
   (defun personal/set-font ()
     (interactive)
-    (set-face-attribute 'default nil :height 170)))
+    (set-face-attribute 'default nil :height 130)))
 
 (set-frame-font "Fira Code")
 (run-with-idle-timer 0 nil #'personal/set-font)
