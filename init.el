@@ -367,7 +367,8 @@ pkill, etc."
     :config
     (setq clojure-toplevel-inside-comment-form t)
     (setq clojure-indent-style 'align-arguments)
-    (put-clojure-indent 'dofor 1))
+    (put-clojure-indent 'dofor 1)
+    (put-clojure-indent 'match 1))
 
   (use-package cider
     :load-path "~/projects/dev/cider/"
