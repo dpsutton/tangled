@@ -353,6 +353,8 @@ pkill, etc."
 (bind-key "C-x m" 'eshell)
 (bind-key "C-x M" (lambda () (interactive) (eshell t)))
 
+(use-package fish-mode)
+
 (use-package yasnippet
   :demand t
   :config

@@ -690,6 +690,13 @@ Standard lisp editing environment
   (bind-key "C-x m" 'eshell)
   (bind-key "C-x M" (lambda () (interactive) (eshell t)))
 #+END_SRC
+
+*** fish
+#+BEGIN_SRC emacs-lisp
+  (use-package fish-mode)
+
+#+END_SRC
+
 ** Yasnippet
 
 Need yasnippet for lsp-mode. And why not. It's a good thing
@@ -838,9 +845,12 @@ Packages for elm-mode
 #+END_SRC
 install intero
 #+BEGIN_SRC emacs-lisp
-  (use-package intero
+  (use-package dante
+    :ensure t
+    :after haskell-mode
     :init
-    (add-hook 'haskell-mode-hook 'intero-mode))
+    (add-hook 'haskell-mode-hook 'flycheck-mode)
+    (add-hook 'haskell-mode-hook 'dante-mode))
 
 #+END_SRC
 * Machine Configs
