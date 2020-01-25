@@ -279,6 +279,12 @@ pkill, etc."
   :bind
   ([remap org-toggle-comment] . resize-window))
 
+(use-package ox-reveal
+  :config
+  (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js"))
+
+(use-package htmlize)
+
 (use-package ibuffer
   :bind
   ("C-x C-b" . ibuffer))

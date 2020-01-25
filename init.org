@@ -540,6 +540,21 @@ Org is lovely except i prefer my =resize-window= command at =C-c ;= instead of t
     :bind
     ([remap org-toggle-comment] . resize-window))
 #+END_SRC
+
+** Presentations
+
+Using instructions for org-reveal from https://github.com/yjwen/org-reveal/
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ox-reveal
+    :config
+    (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js"))
+#+END_SRC
+
+htmlize so that code blocks use emacs theme
+#+BEGIN_SRC emacs-lisp
+  (use-package htmlize)
+#+END_SRC
 * Searching
 
 ** Ibuffer
