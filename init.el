@@ -442,16 +442,27 @@ pkill, etc."
          ("C-c C-l" . lsp-clojure-refactor-menu/body)))
 
 (use-package rust-mode)
-(use-package racer)
+(use-package racer
+  :config
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (add-hook 'racer-mode-hook #'company-mode)
+  (setq company-tooltip-align-annotations t)
+  :bind (:map
+         rust-mode-map
+         ("TAB" . company-indent-or-complete-common)))
 
 (use-package elm-mode)
 (use-package flycheck-elm)
 
 (use-package haskell-mode)
 
-(use-package intero
+(use-package dante
+  :ensure t
+  :after haskell-mode
   :init
-  (add-hook 'haskell-mode-hook 'intero-mode))
+  (add-hook 'haskell-mode-hook 'flycheck-mode)
+  (add-hook 'haskell-mode-hook 'dante-mode))
 
 (defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
 
