@@ -310,6 +310,7 @@ pkill, etc."
     (counsel-ag current-word)))
 
 (use-package ivy
+  :demand t
   :bind
   ("C-c C-r" . ivy-resume)
   :config

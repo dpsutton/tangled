@@ -607,6 +607,7 @@ Define my own "thing at point" ag function
 
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
+    :demand t
     :bind
     ("C-c C-r" . ivy-resume)
     :config
