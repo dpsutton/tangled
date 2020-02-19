@@ -368,49 +368,53 @@ pkill, etc."
 (use-package spinner)
 (use-package seq)
 (use-package sesman)
-(use-package flycheck-joker)
 (use-package buttercup)
 
+(use-package flycheck-clj-kondo
+  :init
+  (add-hook 'after-init-hook #'global-flycheck-mode))
+
+(use-package paredit)
+
 (use-package clojure-mode
-    :load-path "~/projects/dev/clojure-mode"
-    :config
-    (setq clojure-toplevel-inside-comment-form t)
-    (setq clojure-indent-style 'align-arguments)
-    (put-clojure-indent 'dofor 1)
-    (put-clojure-indent 'match 1)
+  :load-path "~/projects/dev/clojure-mode"
+  :config
+  (setq clojure-toplevel-inside-comment-form t)
+  (setq clojure-indent-style 'align-arguments)
+  (put-clojure-indent 'dofor 1)
+  (put-clojure-indent 'match 1)
 
-    (put-clojure-indent 'context 1)
-    (put-clojure-indent 'GET 1)
-    (put-clojure-indent 'compojure/GET 1)
-    (put-clojure-indent 'compojure/POST 1)
-    (put-clojure-indent 'compojure/PATCH 1)
-    (put-clojure-indent 'compojure/PUT 1)
-    (put-clojure-indent 'compojure/DELETE 1)
-    (put-clojure-indent 'POST 1)
-    (put-clojure-indent 'PATCH 1)
-    (put-clojure-indent 'DELETE 1))
+  (put-clojure-indent 'context 1)
+  (put-clojure-indent 'GET 1)
+  (put-clojure-indent 'compojure/GET 1)
+  (put-clojure-indent 'compojure/POST 1)
+  (put-clojure-indent 'compojure/PATCH 1)
+  (put-clojure-indent 'compojure/PUT 1)
+  (put-clojure-indent 'compojure/DELETE 1)
+  (put-clojure-indent 'POST 1)
+  (put-clojure-indent 'PATCH 1)
+  (put-clojure-indent 'DELETE 1))
 
-  (use-package cider
-    :load-path "~/projects/dev/cider/"
-    :init
-    (load "cider-autoloads" t t)
-    :config
-    (setq cider-invert-insert-eval-p t)
-    (setq cider-switch-to-repl-after-insert-p nil)
-    (setq cider-switch-to-repl-on-insert-p nil)
-    (setq cider-font-lock-dynamically t)
-    (setq cider-show-error-buffer nil)
-    (setq cider-repl-display-help-banner nil)
-    (setq cider-repl-pop-to-buffer-on-connect 'display-only)
-    (setq cider-repl-tab-command #'company-indent-or-complete-common)
-    :bind (:map
-           cider-repl-mode-map
-           ("RET" . cider-repl-newline-and-indent)
-           ("C-j" . cider-repl-return)
-           :map
-           paredit-mode-map
-           ("C-j" . cider-repl-return))
-)
+
+(use-package cider
+  :load-path "~/projects/dev/cider/"
+  :init
+  (load "cider-autoloads" t t)
+  :config
+  (setq cider-invert-insert-eval-p t)
+  (setq cider-switch-to-repl-on-insert nil)
+  (setq cider-font-lock-dynamically t)
+  (setq cider-show-error-buffer nil)
+  (setq cider-repl-display-help-banner nil)
+  (setq cider-repl-pop-to-buffer-on-connect 'display-only)
+  (setq cider-repl-tab-command #'company-indent-or-complete-common)
+  :bind (:map
+         cider-repl-mode-map
+         ("RET" . cider-repl-newline-and-indent)
+         ("C-j" . cider-repl-return)
+         :map
+         paredit-mode-map
+         ("C-j" . cider-repl-return)))
 
 (use-package pos-tip)
 
