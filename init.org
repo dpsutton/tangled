@@ -344,7 +344,7 @@ Turn off the quite ugly ui chrome
 
   (use-package gruvbox-theme)
   (load-theme 'brin)
-  (setq hl-line-face '((t :background "#3d424d")))
+  (setq hl-line-face '((:background "#3d424d")))
 #+end_src
 
 
@@ -905,17 +905,6 @@ Var to check that we are on the work machine
                               "Work projects"))
 
 #+END_SRC
-*** Font size
-
-#+BEGIN_SRC emacs-lisp
-  (when personal/work-machine
-    (defun personal/set-font ()
-      (interactive)
-      (set-face-attribute 'default nil :height 140))
-
-    (personal/set-font))
-#+END_SRC
-
 *** TODO Ligatures
 
 Switch away from ligatures hoping to diagnose some memory woes on osx. Need that sweet sweet shell though
@@ -943,16 +932,6 @@ are we on that machine?
 #+END_SRC
 
 
-*** Font size
-
-thinkpad machine has a 2500 screen and needs "manual" scaling. Work machine scales better. Year of the linux desktop
-
-#+BEGIN_SRC emacs-lisp
-  (when personal/linux-machine
-    (defun personal/set-font ()
-      (interactive)
-      (set-face-attribute 'default nil :height 130)))
-#+END_SRC
 ** Any
 
 *** Set font
@@ -960,12 +939,11 @@ thinkpad machine has a 2500 screen and needs "manual" scaling. Work machine scal
 For some reason this was getting lost in the startup shenanigans so we set it once things settle down.
 
 #+BEGIN_SRC emacs-lisp
-  (set-frame-font "Fira Code")
-  (run-with-idle-timer 0 nil #'personal/set-font)
+  (defun personal/set-font ()
+    (interactive)
+    (set-frame-font "Fira Code-13" nil t))
+  (run-with-idle-timer 1 nil #'personal/set-font)
 #+END_SRC
-
-*** TODO
-
 * Post
 
 ** Restore gc

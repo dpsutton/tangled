@@ -169,7 +169,7 @@ pkill, etc."
 
 (use-package gruvbox-theme)
 (load-theme 'brin)
-(setq hl-line-face '((t :background "#3d424d")))
+(setq hl-line-face '((:background "#3d424d")))
 
 (use-package projectile
   :defer 2
@@ -510,13 +510,6 @@ pkill, etc."
   (resize-window-add-choice ?u (lambda () (dired "~/projects/aclaimant/acl"))
                             "Work projects"))
 
-(when personal/work-machine
-  (defun personal/set-font ()
-    (interactive)
-    (set-face-attribute 'default nil :height 140))
-
-  (personal/set-font))
-
 (use-package exec-path-from-shell
   :demand t
   :init
@@ -528,12 +521,9 @@ pkill, etc."
 
 (defconst personal/linux-machine (string= system-name "pop-os"))
 
-(when personal/linux-machine
-  (defun personal/set-font ()
-    (interactive)
-    (set-face-attribute 'default nil :height 130)))
-
-(set-frame-font "Fira Code")
-(run-with-idle-timer 0 nil #'personal/set-font)
+(defun personal/set-font ()
+  (interactive)
+  (set-frame-font "Fira Code-13" nil t))
+(run-with-idle-timer 1 nil #'personal/set-font)
 
 (setq gc-cons-threshold personal/original-gc-threshold)
