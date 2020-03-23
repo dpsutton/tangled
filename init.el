@@ -519,9 +519,10 @@ pkill, etc."
 
 (defconst personal/linux-machine (string= system-name "pop-os"))
 
+(set-frame-font "Fira Code" nil t)
 (defun personal/set-font ()
   (interactive)
-  (set-frame-font "Fira Code-13" nil t))
-(run-with-idle-timer 1 nil #'personal/set-font)
+  (set-face-attribute 'default nil :height 150))
+(add-hook 'emacs-startup-hook #'personal/set-font)
 
 (setq gc-cons-threshold personal/original-gc-threshold)
