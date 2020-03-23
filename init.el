@@ -470,12 +470,10 @@ pkill, etc."
 
 (use-package haskell-mode)
 
-(use-package dante
-  :ensure t
-  :after haskell-mode
-  :init
-  (add-hook 'haskell-mode-hook 'flycheck-mode)
-  (add-hook 'haskell-mode-hook 'dante-mode))
+(use-package lsp-haskell
+  :disabled t
+  :after lsp-mode
+  :hook (haskell-mode . lsp-haskell-enable))
 
 (defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
 

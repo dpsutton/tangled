@@ -853,16 +853,16 @@ Packages for elm-mode
 #+BEGIN_SRC emacs-lisp
   (use-package haskell-mode)
 #+END_SRC
-install intero
-#+BEGIN_SRC emacs-lisp
-  (use-package dante
-    :ensure t
-    :after haskell-mode
-    :init
-    (add-hook 'haskell-mode-hook 'flycheck-mode)
-    (add-hook 'haskell-mode-hook 'dante-mode))
 
-#+END_SRC
+Intero is no longer supported. Trying with just haskell lsp. Taken from https://github.com/jwiegley/dot-emacs/blob/master/init.el
+
+#+begin_src emacs-lisp
+  (use-package lsp-haskell
+    :disabled t
+    :after lsp-mode
+    :hook (haskell-mode . lsp-haskell-enable))
+#+end_src
+
 * Machine Configs
 ** Work
 
