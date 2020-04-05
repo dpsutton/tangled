@@ -339,6 +339,17 @@ Turn off the quite ugly ui chrome
 *** Themes
 
 #+begin_src emacs-lisp
+  (defun personal/random-theme ()
+    (interactive)
+    (let* ((themes (custom-available-themes))
+           (theme (symbol-name (nth (cl-random (length themes)) themes))))
+      (message "Loading: %s" theme)
+      (counsel-load-theme-action theme)))
+
+  (bind-key "C-c l" #'personal/random-theme)
+#+end_src
+
+#+begin_src emacs-lisp
   (use-package solarized-theme)
   (use-package darktooth-theme)
   (use-package kaolin-themes)

@@ -164,6 +164,15 @@ pkill, etc."
 
 (tool-bar-mode -1)
 
+(defun personal/random-theme ()
+  (interactive)
+  (let* ((themes (custom-available-themes))
+         (theme (symbol-name (nth (cl-random (length themes)) themes))))
+    (message "Loading: %s" theme)
+    (counsel-load-theme-action theme)))
+
+(bind-key "C-c l" #'personal/random-theme)
+
 (use-package solarized-theme)
 (use-package darktooth-theme)
 (use-package kaolin-themes)
