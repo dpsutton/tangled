@@ -469,7 +469,7 @@ pkill, etc."
 
 (use-package rust-mode)
 (use-package racer
-  :config
+  :init
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode)
   (add-hook 'racer-mode-hook #'company-mode)
