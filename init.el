@@ -288,7 +288,9 @@ pkill, etc."
 
 (use-package org
   :bind
-  ([remap org-toggle-comment] . resize-window))
+  ([remap org-toggle-comment] . resize-window)
+  :init
+  (require 'org-tempo))
 
 (use-package ox-reveal
   :config

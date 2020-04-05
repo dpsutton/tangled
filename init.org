@@ -548,10 +548,14 @@ Use undo tree
 
 Org is lovely except i prefer my =resize-window= command at =C-c ;= instead of the toggle comment command.
 
+Require org-tempo so that when typing ~<s~ it will expand out into the source block template. A recent change in org moved this and it now needs to be required
+
 #+BEGIN_SRC emacs-lisp
   (use-package org
     :bind
-    ([remap org-toggle-comment] . resize-window))
+    ([remap org-toggle-comment] . resize-window)
+    :init
+    (require 'org-tempo))
 #+END_SRC
 
 ** Presentations
