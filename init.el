@@ -72,7 +72,9 @@ pkill, etc."
   (resize-window-add-choice ?d (lambda () (dired "~/projects/dev"))
                             "Visit dev directoryq")
   (resize-window-add-choice ?m (lambda () (resize-window--window-push))
-                            "Push window state onto window stack"))
+                            "Push window state onto window stack")
+  (resize-window-add-choice ?v (lambda () (find-file "~/projects/projects.org"))
+                            "Edit project file"))
 
 (setq ring-bell-function 'ignore)
 
