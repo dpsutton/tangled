@@ -535,7 +535,7 @@ pkill, etc."
 (set-frame-font "Fira Code" nil t)
 (defun personal/set-font ()
   (interactive)
-  (set-face-attribute 'default nil :height 150))
+  (set-face-attribute 'default nil :height 130))
 (add-hook 'emacs-startup-hook #'personal/set-font)
 
 (setq gc-cons-threshold personal/original-gc-threshold)
