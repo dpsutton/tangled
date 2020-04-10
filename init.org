@@ -276,6 +276,19 @@ The main benefit is that we can ~M-x~ =describe-personal-keybindings= to see a l
 #+END_SRC
 
 
+** Identity Machines
+
+are we on that machine?
+
+#+BEGIN_SRC emacs-lisp
+  (defconst personal/linux-machine (string= system-name "pop-os"))
+#+END_SRC
+
+Var to check that we are on the work machine
+#+BEGIN_SRC emacs-lisp
+  (defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
+#+END_SRC
+
 ** Appearance
 
 You'll notice that many of the packages in this section have =:defer nil=. This is because some of these package are never called explicitly because they operate in the background, but I want them loaded when Emacs starts so they can perform their necessary customization.
@@ -813,38 +826,38 @@ Clojure mode and CIDER are dev versions locally
   (bind-key "C-c t" 'cider-tooltip-show)
 #+END_SRC
 *** LSP
-indent-region-function
-
 
 Use lsp-mode with the excellent lsp-clojure package.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-mode
-    :init
-    (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
-    (setq lsp-enable-indentation nil)
-    (setq lsp-enable-completion-at-point nil)
-    ;; (setq indent-region-function #'clojure-indent-function)
-    (add-hook 'clojure-mode-hook #'lsp)
-    (add-hook 'clojurec-mode-hook #'lsp)
-    (add-hook 'clojurescript-mode-hook #'lsp)
-    :config
-    (require 'lsp-clojure)
-    (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
-    (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojure"))
-    (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript")))
+  (when personal/work-machine
+    (use-package lsp-mode
+      :init
+      (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
+      (setq lsp-enable-indentation nil)
+      (setq lsp-enable-completion-at-point nil)
+      ;; (setq indent-region-function #'clojure-indent-function)
+      (add-hook 'clojure-mode-hook #'lsp)
+      (add-hook 'clojurec-mode-hook #'lsp)
+      (add-hook 'clojurescript-mode-hook #'lsp)
+      :config
+      (require 'lsp-clojure)
+      (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
+      (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojure"))
+      (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript"))))
 #+END_SRC
 
 Use the hydra I cooked up recently
 
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-clojure-hydra
-    :after (lsp-mode lsp-mode cider)
-    :load-path "~/projects/elisp/lsp-clojure-hydra"
-    :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
-           :map
-           cider-mode-map
-           ("C-c C-l" . lsp-clojure-refactor-menu/body)))
+  (when personal/work-machine
+    (use-package lsp-clojure-hydra
+      :after (lsp-mode lsp-mode cider)
+      :load-path "~/projects/elisp/lsp-clojure-hydra"
+      :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
+             :map
+             cider-mode-map
+             ("C-c C-l" . lsp-clojure-refactor-menu/body))))
 #+END_SRC
 ** Rust
 
@@ -859,14 +872,6 @@ Use the hydra I cooked up recently
     :bind (:map
            rust-mode-map
            ("TAB" . company-indent-or-complete-common)))
-#+END_SRC
-** Elm
-
-Packages for elm-mode
-
-#+BEGIN_SRC emacs-lisp
-  (use-package elm-mode)
-  (use-package flycheck-elm)
 #+END_SRC
 ** Haskell
 #+BEGIN_SRC emacs-lisp
@@ -927,10 +932,6 @@ Then use ediprolog mode. Doesn't seem super necessary as prolog-mode allows me t
 * Machine Configs
 ** Work
 
-Var to check that we are on the work machine
-#+BEGIN_SRC emacs-lisp
-  (defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
-#+END_SRC
 *** Connect to running services
 
 #+BEGIN_SRC emacs-lisp
@@ -984,14 +985,6 @@ Switch away from ligatures hoping to diagnose some memory woes on osx. Need that
     (setq mac-command-modifier 'meta)
     (global-display-line-numbers-mode +1))
 #+END_SRC
-** Linux machine
-
-are we on that machine?
-
-#+BEGIN_SRC emacs-lisp
-  (defconst personal/linux-machine (string= system-name "pop-os"))
-#+END_SRC
-
 
 ** Any
 

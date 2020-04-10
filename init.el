@@ -131,6 +131,10 @@ pkill, etc."
 
 (require 'bind-key)
 
+(defconst personal/linux-machine (string= system-name "pop-os"))
+
+(defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
+
 (when (>= emacs-major-version 26)
   (pixel-scroll-mode))
 
@@ -446,28 +450,30 @@ pkill, etc."
 
 (bind-key "C-c t" 'cider-tooltip-show)
 
-(use-package lsp-mode
-  :init
-  (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
-  (setq lsp-enable-indentation nil)
-  (setq lsp-enable-completion-at-point nil)
-  ;; (setq indent-region-function #'clojure-indent-function)
-  (add-hook 'clojure-mode-hook #'lsp)
-  (add-hook 'clojurec-mode-hook #'lsp)
-  (add-hook 'clojurescript-mode-hook #'lsp)
-  :config
-  (require 'lsp-clojure)
-  (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
-  (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojure"))
-  (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript")))
+(when personal/work-machine
+  (use-package lsp-mode
+    :init
+    (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
+    (setq lsp-enable-indentation nil)
+    (setq lsp-enable-completion-at-point nil)
+    ;; (setq indent-region-function #'clojure-indent-function)
+    (add-hook 'clojure-mode-hook #'lsp)
+    (add-hook 'clojurec-mode-hook #'lsp)
+    (add-hook 'clojurescript-mode-hook #'lsp)
+    :config
+    (require 'lsp-clojure)
+    (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
+    (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojure"))
+    (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript"))))
 
-(use-package lsp-clojure-hydra
-  :after (lsp-mode lsp-mode cider)
-  :load-path "~/projects/elisp/lsp-clojure-hydra"
-  :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
-         :map
-         cider-mode-map
-         ("C-c C-l" . lsp-clojure-refactor-menu/body)))
+(when personal/work-machine
+  (use-package lsp-clojure-hydra
+    :after (lsp-mode lsp-mode cider)
+    :load-path "~/projects/elisp/lsp-clojure-hydra"
+    :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
+           :map
+           cider-mode-map
+           ("C-c C-l" . lsp-clojure-refactor-menu/body))))
 
 (use-package rust-mode)
 (use-package racer
@@ -479,9 +485,6 @@ pkill, etc."
   :bind (:map
          rust-mode-map
          ("TAB" . company-indent-or-complete-common)))
-
-(use-package elm-mode)
-(use-package flycheck-elm)
 
 (use-package haskell-mode)
 
@@ -518,9 +521,6 @@ pkill, etc."
               ("C-c C-j" . prolog-insert-prompt)))
 
 (use-package ediprolog)
-
-(defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
-
 (when personal/work-machine
   (defmacro aclaimant-cider-connection (name&dir port)
     `(defun ,(intern (format "aclaimant-jack-in-%s" (symbol-name name&dir))) ()
@@ -560,8 +560,6 @@ pkill, etc."
 (when personal/work-machine
   (setq mac-command-modifier 'meta)
   (global-display-line-numbers-mode +1))
-
-(defconst personal/linux-machine (string= system-name "pop-os"))
 
 (set-frame-font "Fira Code" nil t)
 (defun personal/set-font ()
