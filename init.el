@@ -290,7 +290,9 @@ pkill, etc."
   :bind
   ([remap org-toggle-comment] . resize-window)
   :init
-  (require 'org-tempo))
+  (condition-case nil
+      (require 'org-tempo)
+    ((error) nil)))
 
 (use-package ox-reveal
   :config

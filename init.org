@@ -555,7 +555,9 @@ Require org-tempo so that when typing ~<s~ it will expand out into the source bl
     :bind
     ([remap org-toggle-comment] . resize-window)
     :init
-    (require 'org-tempo))
+    (condition-case nil
+        (require 'org-tempo)
+      ((error) nil)))
 #+END_SRC
 
 ** Presentations
