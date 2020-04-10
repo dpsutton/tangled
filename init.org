@@ -934,7 +934,11 @@ Then use ediprolog mode. Doesn't seem super necessary as prolog-mode allows me t
 #+BEGIN_SRC emacs-lisp
   (use-package ediprolog)
 #+END_SRC
+** Scheme
 
+#+BEGIN_SRC emacs-lisp
+  (use-package geiser)
+#+END_SRC
 * Machine Configs
 ** Work
 

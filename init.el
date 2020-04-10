@@ -525,6 +525,8 @@ pkill, etc."
 
 (use-package ediprolog)
 
+(use-package geiser)
+
 (when personal/work-machine
   (defmacro aclaimant-cider-connection (name&dir port)
     `(defun ,(intern (format "aclaimant-jack-in-%s" (symbol-name name&dir))) ()
