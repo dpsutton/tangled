@@ -521,6 +521,7 @@ pkill, etc."
               ("C-c C-j" . prolog-insert-prompt)))
 
 (use-package ediprolog)
+
 (when personal/work-machine
   (defmacro aclaimant-cider-connection (name&dir port)
     `(defun ,(intern (format "aclaimant-jack-in-%s" (symbol-name name&dir))) ()
