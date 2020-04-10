@@ -490,6 +490,35 @@ pkill, etc."
   :after lsp-mode
   :hook (haskell-mode . lsp-haskell-enable))
 
+(defun prolog-insert-prompt ()
+  (interactive)
+  (insert "\n%?- "))
+
+(defun prolog-insert-comment-block ()
+  "Insert a PceEmacs-style comment block like /* - - ... - - */ "
+  (interactive)
+  (let ((dashes "-"))
+    (dotimes (_ 36) (setq dashes (concat "- " dashes)))
+    (insert (format "/* %s\n\n%s */" dashes dashes))
+    (forward-line -1)
+    (indent-for-tab-command)))
+
+(use-package prolog
+  :after (ediprolog)
+  :config
+  (setq prolog-system 'swi
+        prolog-program-switches '((swi ("-G128M" "-T128M" "-L128M" "-O"))
+                                  (t nil))
+        prolog-electric-if-then-else-flag t)
+  :bind (:map prolog-mode-map
+              ("C-c C-k" . ediprolog-dwim)
+              ("C-c k" . ediprolog-dwim)
+              ("C-;" . prolog-insert-comment-block)
+              ("C-c j" . prolog-insert-prompt)
+              ("C-c C-j" . prolog-insert-prompt)))
+
+(use-package ediprolog)
+
 (defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
 
 (when personal/work-machine
