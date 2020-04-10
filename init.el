@@ -131,7 +131,10 @@ pkill, etc."
 
 (require 'bind-key)
 
+(defconst personal/osx-p (string= system-type "darwin"))
+
 (defconst personal/linux-machine (string= system-name "pop-os"))
+(defconst personal/mac-machine (string= system-name "dan-mbp.local"))
 
 (defconst personal/work-machine (string= system-name "dan-aclaimant-mbp.local"))
 
@@ -558,8 +561,10 @@ pkill, etc."
   :init
   (exec-path-from-shell-initialize))
 
+(when personal/osx-p
+  (setq mac-command-modifier 'meta))
+
 (when personal/work-machine
-  (setq mac-command-modifier 'meta)
   (global-display-line-numbers-mode +1))
 
 (set-frame-font "Fira Code" nil t)

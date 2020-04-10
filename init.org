@@ -281,7 +281,13 @@ The main benefit is that we can ~M-x~ =describe-personal-keybindings= to see a l
 are we on that machine?
 
 #+BEGIN_SRC emacs-lisp
+  (defconst personal/osx-p (string= system-type "darwin"))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
   (defconst personal/linux-machine (string= system-name "pop-os"))
+  (defconst personal/mac-machine (string= system-name "dan-mbp.local"))
+
 #+END_SRC
 
 Var to check that we are on the work machine
@@ -981,8 +987,10 @@ Switch away from ligatures hoping to diagnose some memory woes on osx. Need that
 *** Random assorteds
 
 #+BEGIN_SRC emacs-lisp
+  (when personal/osx-p
+    (setq mac-command-modifier 'meta))
+
   (when personal/work-machine
-    (setq mac-command-modifier 'meta)
     (global-display-line-numbers-mode +1))
 #+END_SRC
 
