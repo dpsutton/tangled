@@ -435,9 +435,10 @@ pkill, etc."
          cider-repl-mode-map
          ("RET" . cider-repl-newline-and-indent)
          ("C-j" . cider-repl-return)
-         :map
-         paredit-mode-map
-         ("C-j" . cider-repl-return)))
+         ;; :map
+         ;; paredit-mode-map
+         ;; ("C-j" . cider-repl-return)
+         ))
 
 (use-package pos-tip)
 
@@ -526,7 +527,11 @@ pkill, etc."
 
 (use-package ediprolog)
 
-(use-package geiser)
+(use-package geiser
+  :bind (:map geiser-repl-mode-map
+              ("C-j" . geiser-repl--maybe-send)
+              ("RET" . indent-new-comment-line)
+              ([return] . indent-new-comment-line)))
 
 (when personal/work-machine
   (defmacro aclaimant-cider-connection (name&dir port)

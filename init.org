@@ -810,9 +810,10 @@ Clojure mode and CIDER are dev versions locally
            cider-repl-mode-map
            ("RET" . cider-repl-newline-and-indent)
            ("C-j" . cider-repl-return)
-           :map
-           paredit-mode-map
-           ("C-j" . cider-repl-return)))
+           ;; :map
+           ;; paredit-mode-map
+           ;; ("C-j" . cider-repl-return)
+           ))
 #+END_SRC
 
 ****  tooltip for doc stuff
@@ -938,7 +939,11 @@ Then use ediprolog mode. Doesn't seem super necessary as prolog-mode allows me t
 ** Scheme
 
 #+BEGIN_SRC emacs-lisp
-  (use-package geiser)
+  (use-package geiser
+    :bind (:map geiser-repl-mode-map
+                ("C-j" . geiser-repl--maybe-send)
+                ("RET" . indent-new-comment-line)
+                ([return] . indent-new-comment-line)))
 #+END_SRC
 * Machine Configs
 ** Work
