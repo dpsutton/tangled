@@ -565,6 +565,9 @@ pkill, etc."
   (resize-window-add-choice ?u (lambda () (dired "~/projects/aclaimant/acl"))
                             "Work projects"))
 
+(when personal/osx-p
+  (mac-auto-operator-composition-mode))
+
 (use-package exec-path-from-shell
   :demand t
   :init

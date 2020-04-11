@@ -984,9 +984,12 @@ Then use ediprolog mode. Doesn't seem super necessary as prolog-mode allows me t
                               "Work projects"))
 
 #+END_SRC
-*** TODO Ligatures
+*** DONE Ligatures
 
-Switch away from ligatures hoping to diagnose some memory woes on osx. Need that sweet sweet shell though
+#+BEGIN_SRC emacs-lisp
+  (when personal/osx-p
+    (mac-auto-operator-composition-mode))
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (use-package exec-path-from-shell
