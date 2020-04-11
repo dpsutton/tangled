@@ -943,6 +943,7 @@ Then use ediprolog mode. Doesn't seem super necessary as prolog-mode allows me t
     :bind (:map geiser-repl-mode-map
                 ("C-j" . geiser-repl--maybe-send)
                 ("RET" . indent-new-comment-line)
+                ("C-a" . crux-move-beginning-of-line)
                 ([return] . indent-new-comment-line)))
 #+END_SRC
 * Machine Configs

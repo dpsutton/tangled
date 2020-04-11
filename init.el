@@ -531,6 +531,7 @@ pkill, etc."
   :bind (:map geiser-repl-mode-map
               ("C-j" . geiser-repl--maybe-send)
               ("RET" . indent-new-comment-line)
+              ("C-a" . crux-move-beginning-of-line)
               ([return] . indent-new-comment-line)))
 
 (when personal/work-machine
