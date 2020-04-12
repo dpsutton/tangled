@@ -397,7 +397,9 @@ pkill, etc."
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
-(use-package paredit)
+(use-package paredit
+  :bind (:map paredit-mode-map
+              ("C-j" . nil)))
 
 (use-package clojure-mode
   :load-path "~/projects/dev/clojure-mode"
