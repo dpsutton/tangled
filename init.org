@@ -370,7 +370,6 @@ Turn off the quite ugly ui chrome
 
 #+begin_src emacs-lisp
   (use-package solarized-theme)
-  (use-package darktooth-theme)
   (use-package kaolin-themes)
   (use-package sublime-themes)
 

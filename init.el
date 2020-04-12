@@ -181,7 +181,6 @@ pkill, etc."
 (bind-key "C-c l" #'personal/random-theme)
 
 (use-package solarized-theme)
-(use-package darktooth-theme)
 (use-package kaolin-themes)
 (use-package sublime-themes)
 
