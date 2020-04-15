@@ -185,8 +185,9 @@ pkill, etc."
 (use-package sublime-themes)
 
 (use-package gruvbox-theme)
-(load-theme 'brin)
-(setq hl-line-face '((:background "#3d424d")))
+(load-theme 'kaolin-light)
+(set-face-foreground 'highlight "black")
+(set-face-background 'highlight "LightBlue")
 
 (use-package projectile
   :defer 2
@@ -456,12 +457,12 @@ pkill, etc."
 
 (bind-key "C-c t" 'cider-tooltip-show)
 
-(when personal/work-machine
+(when (or personal/work-machine personal/mac-machine)
   (use-package lsp-mode
     :init
     (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
     (setq lsp-enable-indentation nil)
-    (setq lsp-enable-completion-at-point nil)
+    ;; (setq lsp-enable-completion-at-point nil)
     ;; (setq indent-region-function #'clojure-indent-function)
     (add-hook 'clojure-mode-hook #'lsp)
     (add-hook 'clojurec-mode-hook #'lsp)
@@ -472,7 +473,7 @@ pkill, etc."
     (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojure"))
     (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript"))))
 
-(when personal/work-machine
+(when (or personal/work-machine personal/mac-machine)
   (use-package lsp-clojure-hydra
     :after (lsp-mode lsp-mode cider)
     :load-path "~/projects/elisp/lsp-clojure-hydra"
