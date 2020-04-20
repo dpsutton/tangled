@@ -717,7 +717,7 @@ Standard lisp editing environment
 
 #+BEGIN_SRC emacs-lisp
   (defconst personal/my-lisps '(clojure lisp emacs-lisp cider-repl geiser
-                                        geiser-repl scheme
+                                        geiser-repl scheme inf-clojure
                                         ;;racket slime repl
                                         ))
 
@@ -764,6 +764,14 @@ Get the dependencies for cider
   (use-package buttercup)
 #+END_SRC
 
+For some reason paredit is acting strange
+#+BEGIN_SRC emacs-lisp
+  (use-package paredit
+    :bind (:map
+           paredit-mode-map
+           ("C-j" . nil)
+           ("{" . paredit-open-curly)))
+#+END_SRC
 
 Clojure mode and CIDER are dev versions locally
 
@@ -771,10 +779,6 @@ Clojure mode and CIDER are dev versions locally
   (use-package flycheck-clj-kondo
     :init
     (add-hook 'after-init-hook #'global-flycheck-mode))
-
-  (use-package paredit
-    :bind (:map paredit-mode-map
-                ("C-j" . nil)))
 
   (use-package clojure-mode
     :load-path "~/projects/dev/clojure-mode"
@@ -795,6 +799,16 @@ Clojure mode and CIDER are dev versions locally
     (put-clojure-indent 'PATCH 1)
     (put-clojure-indent 'DELETE 1))
 
+  ;; testing dependency for inf-clojure
+  (use-package assess)
+
+  (use-package inf-clojure
+    :demand t
+    :load-path "~/projects/dev/inf-clojure/"
+    :bind (:map
+           inf-clojure-mode-map
+           ("RET" . newline)
+           ("C-j" . comint-send-input)))
 
   (use-package cider
     :load-path "~/projects/dev/cider/"
@@ -816,8 +830,17 @@ Clojure mode and CIDER are dev versions locally
            ;; paredit-mode-map
            ;; ("C-j" . cider-repl-return)
            ))
+
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+  (defun personal/unhook-cider ()
+    (seq-doseq (buffer (buffer-list))
+      (with-current-buffer buffer
+        (cider-mode -1))
+      (remove-hook 'clojure-mode-hook #'cider-mode)))
+
+#+END_SRC
 ****  tooltip for doc stuff
 #+BEGIN_SRC emacs-lisp
   (use-package pos-tip)

@@ -368,7 +368,7 @@ pkill, etc."
   (eldoc-mode 1))
 
 (defconst personal/my-lisps '(clojure lisp emacs-lisp cider-repl geiser
-                                      geiser-repl scheme
+                                      geiser-repl scheme inf-clojure
                                       ;;racket slime repl
                                       ))
 
@@ -393,13 +393,15 @@ pkill, etc."
 (use-package sesman)
 (use-package buttercup)
 
+(use-package paredit
+  :bind (:map
+         paredit-mode-map
+         ("C-j" . nil)
+         ("{" . paredit-open-curly)))
+
 (use-package flycheck-clj-kondo
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode))
-
-(use-package paredit
-  :bind (:map paredit-mode-map
-              ("C-j" . nil)))
 
 (use-package clojure-mode
   :load-path "~/projects/dev/clojure-mode"
@@ -420,6 +422,16 @@ pkill, etc."
   (put-clojure-indent 'PATCH 1)
   (put-clojure-indent 'DELETE 1))
 
+;; testing dependency for inf-clojure
+(use-package assess)
+
+(use-package inf-clojure
+  :demand t
+  :load-path "~/projects/dev/inf-clojure/"
+  :bind (:map
+         inf-clojure-mode-map
+         ("RET" . newline)
+         ("C-j" . comint-send-input)))
 
 (use-package cider
   :load-path "~/projects/dev/cider/"
@@ -441,6 +453,12 @@ pkill, etc."
          ;; paredit-mode-map
          ;; ("C-j" . cider-repl-return)
          ))
+
+(defun personal/unhook-cider ()
+  (seq-doseq (buffer (buffer-list))
+    (with-current-buffer buffer
+      (cider-mode -1))
+    (remove-hook 'clojure-mode-hook #'cider-mode)))
 
 (use-package pos-tip)
 
