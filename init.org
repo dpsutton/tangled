@@ -987,12 +987,6 @@ Then use ediprolog mode. Doesn't seem super necessary as prolog-mode allows me t
            (cider-connect (list :host "local.aclaimant.com" :port ,port
                                 :project-dir dir)))))
 
-    (defun personal/aclaimant-connect (name&dir host port options)
-      (let ((dir (format "~/projects/aclaimant/acl/src/aclaimant/" (symbol-name name&dir))))
-        (cider-connect (append (list :host host :port port
-                                     :project-dir dir)
-                               options))))
-
     (aclaimant-cider-connection service 7000)
     (aclaimant-cider-connection jobs 7001)
     (aclaimant-cider-connection alerter 7002)
