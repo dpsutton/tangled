@@ -250,6 +250,12 @@ pkill, etc."
   :bind
   ([f8] . neotree-project-dir))
 
+(use-package all-the-icons)
+
+(use-package all-the-icons-dired
+  :after all-the-icons
+  :hook (dired-mode . all-the-icons-dired-mode))
+
 (defvar my-text-environments '(org markdown))
 
 (defun standard-text-environment ()

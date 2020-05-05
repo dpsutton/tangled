@@ -475,6 +475,17 @@ very convenient package from bbatsov
 #+end_src
 
 
+** Visuals
+
+Thanks https://github.com/patrickt/emacs
+
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons)
+
+  (use-package all-the-icons-dired
+    :after all-the-icons
+    :hook (dired-mode . all-the-icons-dired-mode))
+#+END_SRC
 * Text Editing Settings
 
 ** Text environment hook
