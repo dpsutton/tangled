@@ -97,7 +97,7 @@ pkill, etc."
 (customize-set-variable 'read-file-name-completion-ignore-case t)
 (customize-set-variable 'read-buffer-completion-ignore-case t)
 
-(customize-set-variable 'show-trailing-whitespace t)
+(add-hook 'prog-mode-hook (lambda () (setq-local show-trailing-whitespace t)))
 
 (show-paren-mode)
 
@@ -344,6 +344,15 @@ pkill, etc."
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t))
+
+(use-package ivy-rich
+  :custom
+  (ivy-virtual-abbreviate 'full)
+  (ivy-rich-switch-buffer-align-virtual-buffer nil)
+  (ivy-rich-path-style 'full)
+  :config
+  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  (ivy-rich-mode))
 
 (use-package counsel
   :bind

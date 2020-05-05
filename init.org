@@ -193,7 +193,7 @@ This variable tells Emacs to prefer the =.el= file if it's newer, even if there 
 - Highlight trailing whitespace in red, so it's easily visible
 
   #+begin_src emacs-lisp
-    (customize-set-variable 'show-trailing-whitespace t)
+    (add-hook 'prog-mode-hook (lambda () (setq-local show-trailing-whitespace t)))
   #+end_src
 
 - Highlight matching parenthesis
@@ -662,6 +662,17 @@ Define my own "thing at point" ag function
     :config
     (ivy-mode 1)
     (setq ivy-use-virtual-buffers t))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-rich
+    :custom
+    (ivy-virtual-abbreviate 'full)
+    (ivy-rich-switch-buffer-align-virtual-buffer nil)
+    (ivy-rich-path-style 'full)
+    :config
+    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+    (ivy-rich-mode))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
