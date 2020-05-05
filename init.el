@@ -131,6 +131,11 @@ pkill, etc."
 
 (require 'bind-key)
 
+(setq
+ make-backup-files nil
+ auto-save-default nil
+ create-lockfiles nil)
+
 (defconst personal/osx-p (string= system-type "darwin"))
 
 (defconst personal/linux-machine (string= system-name "pop-os"))
@@ -170,6 +175,9 @@ pkill, etc."
     (global-hl-line-mode +1))
 
 (tool-bar-mode -1)
+
+(setq custom-file (make-temp-file ""))
+(setq custom-safe-themes t)
 
 (defun personal/random-theme ()
   (interactive)

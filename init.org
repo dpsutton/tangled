@@ -275,7 +275,14 @@ The main benefit is that we can ~M-x~ =describe-personal-keybindings= to see a l
   (require 'bind-key)
 #+END_SRC
 
+** Backups
 
+#+BEGIN_SRC emacs-lisp
+  (setq
+   make-backup-files nil
+   auto-save-default nil
+   create-lockfiles nil)
+#+END_SRC
 ** Identity Machines
 
 are we on that machine?
@@ -356,6 +363,12 @@ Turn off the quite ugly ui chrome
 #+END_SRC
 
 *** Themes
+
+Themes love to make the background black. So we give a temp file, never to be seen again, as the place to write down all this stuff. Clever idea from https://github.com/patrickt/emacs
+#+BEGIN_SRC emacs-lisp
+  (setq custom-file (make-temp-file ""))
+  (setq custom-safe-themes t)
+#+END_SRC
 
 #+begin_src emacs-lisp
   (defun personal/random-theme ()
