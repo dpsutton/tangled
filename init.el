@@ -397,6 +397,9 @@ pkill, etc."
 
 (hook-up-modes personal/my-lisps #'standard-lisp-environment)
 
+(use-package vterm
+  :ensure t)
+
 (bind-key "C-x m" 'eshell)
 (bind-key "C-x M" (lambda () (interactive) (eshell t)))
 

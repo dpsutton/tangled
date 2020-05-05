@@ -761,6 +761,37 @@ Standard lisp editing environment
 #+END_SRC
 ** Shells
 
+vterm looks promising: https://github.com/akermu/emacs-libvterm
+be aware of this: https://github.com/akermu/emacs-libvterm#shell-side-configuration
+
+needed two things:
+1. brew reinstall emacs-mac --with-modules
+2. brew install cmake
+3. need the following in the fish shell
+#+BEGIN_SRC fish
+  function vterm_printf;
+      if [ -n "$TMUX" ]
+          # tell tmux to pass the escape sequences through
+          # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
+          printf "\ePtmux;\e\e]%s\007\e\\" "$argv"
+      else if string match -q -- "screen*" "$TERM"
+          # GNU screen (screen, screen-256color, screen-256color-bce)
+          printf "\eP\e]%s\007\e\\" "$argv"
+      else
+          printf "\e]%s\e\\" "$argv"
+      end
+  end
+
+  funcsave vterm_printf
+#+END_SRC
+
+This is the bees knees. vterm makes the buffer and can use ~-C-c C-t~ to go into edit mode.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package vterm
+    :ensure t)
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
   (bind-key "C-x m" 'eshell)
   (bind-key "C-x M" (lambda () (interactive) (eshell t)))
