@@ -40,12 +40,6 @@ Optionally enable =debug-on-error= when diagnosing errors with the config file i
   (setq gc-cons-threshold most-positive-fixnum)
 #+end_src
 
-* Customized variables
-#+BEGIN_SRC emacs-lisp
-  (setq custom-file "~/.emacs.d/custom.el")
-  (when (file-exists-p custom-file)
-   (load custom-file))
-#+END_SRC
 
 * Package Management
 
@@ -368,6 +362,7 @@ Themes love to make the background black. So we give a temp file, never to be se
 #+BEGIN_SRC emacs-lisp
   (setq custom-file (make-temp-file ""))
   (setq custom-safe-themes t)
+  (setq enable-local-variables :all)
 #+END_SRC
 
 #+begin_src emacs-lisp

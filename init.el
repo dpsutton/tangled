@@ -16,10 +16,6 @@
 (setq personal/original-gc-threshold gc-cons-threshold)
 (setq gc-cons-threshold most-positive-fixnum)
 
-(setq custom-file "~/.emacs.d/custom.el")
-(when (file-exists-p custom-file)
- (load custom-file))
-
 (customize-set-variable 'package-archives
                         '(("gnu"       . "https://elpa.gnu.org/packages/")
                           ("melpa" . "https://melpa.org/packages/")))
@@ -178,6 +174,7 @@ pkill, etc."
 
 (setq custom-file (make-temp-file ""))
 (setq custom-safe-themes t)
+(setq enable-local-variables :all)
 
 (defun personal/random-theme ()
   (interactive)
