@@ -395,7 +395,12 @@ pkill, etc."
 (hook-up-modes personal/my-lisps #'standard-lisp-environment)
 
 (use-package vterm
-  :ensure t)
+  :config
+  (defun turn-off-chrome ()
+    (hl-line-mode -1)
+    (display-line-numbers-mode -1))
+  :ensure t
+  :hook (vterm-mode . turn-off-chrome))
 
 (bind-key "C-x m" 'eshell)
 (bind-key "C-x M" (lambda () (interactive) (eshell t)))

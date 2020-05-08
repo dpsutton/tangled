@@ -784,7 +784,12 @@ This is the bees knees. vterm makes the buffer and can use ~-C-c C-t~ to go into
 
 #+BEGIN_SRC emacs-lisp
   (use-package vterm
-    :ensure t)
+    :config
+    (defun turn-off-chrome ()
+      (hl-line-mode -1)
+      (display-line-numbers-mode -1))
+    :ensure t
+    :hook (vterm-mode . turn-off-chrome))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
