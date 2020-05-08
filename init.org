@@ -140,10 +140,14 @@ This variable tells Emacs to prefer the =.el= file if it's newer, even if there 
                               "Edit project file"))
 #+END_SRC
 
-- turn off the stupid system bell
+- turn off the stupid system bell but make it visible!
 
 #+BEGIN_SRC emacs-lisp
-  (setq ring-bell-function 'ignore)
+  (setq visible-bell nil
+        ring-bell-function 'flash-mode-line)
+  (defun flash-mode-line ()
+    (invert-face 'mode-line)
+    (run-with-timer 0.1 nil #'invert-face 'mode-line))
 #+END_SRC
 
 - reload files when changed on disk
