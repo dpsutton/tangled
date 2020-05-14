@@ -1061,6 +1061,7 @@ Then use ediprolog mode. Doesn't seem super necessary as prolog-mode allows me t
     (aclaimant-cider-connection jobs 7001)
     (aclaimant-cider-connection alerter 7002)
     (aclaimant-cider-connection twilio 7004)
+    (aclaimant-cider-connection paper-pusher 7005)
 
     (defun aclaimant-jack-in-dashboard ()
       (interactive)

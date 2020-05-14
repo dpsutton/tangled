@@ -600,6 +600,7 @@ pkill, etc."
   (aclaimant-cider-connection jobs 7001)
   (aclaimant-cider-connection alerter 7002)
   (aclaimant-cider-connection twilio 7004)
+  (aclaimant-cider-connection paper-pusher 7005)
 
   (defun aclaimant-jack-in-dashboard ()
     (interactive)
