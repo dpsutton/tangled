@@ -476,7 +476,7 @@ pkill, etc."
   (setq cider-show-error-buffer nil)
   (setq cider-repl-display-help-banner nil)
   (setq cider-repl-pop-to-buffer-on-connect 'display-only)
-  (setq cider-repl-tab-command #'company-indent-or-complete-common)
+  (setq cider-repl-tab-command (lambda () (company-indent-or-complete-common nil)))
   :bind (:map
          cider-repl-mode-map
          ("RET" . cider-repl-newline-and-indent)
@@ -541,7 +541,7 @@ pkill, etc."
   (setq company-tooltip-align-annotations t)
   :bind (:map
          rust-mode-map
-         ("TAB" . company-indent-or-complete-common)))
+         ("TAB" . (lambda () (company-indent-or-complete-common nil)))))
 
 (use-package haskell-mode)
 
