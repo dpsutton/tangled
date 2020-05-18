@@ -532,17 +532,6 @@ pkill, etc."
            cider-mode-map
            ("C-c C-l" . lsp-clojure-refactor-menu/body))))
 
-(use-package rust-mode)
-(use-package racer
-  :init
-  (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'racer-mode-hook #'eldoc-mode)
-  (add-hook 'racer-mode-hook #'company-mode)
-  (setq company-tooltip-align-annotations t)
-  :bind (:map
-         rust-mode-map
-         ("TAB" . (lambda () (company-indent-or-complete-common nil)))))
-
 (use-package haskell-mode)
 
 (use-package lsp-haskell
