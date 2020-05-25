@@ -386,7 +386,7 @@ Themes love to make the background black. So we give a temp file, never to be se
   (use-package sublime-themes)
 
   (use-package gruvbox-theme)
-  (load-theme 'kaolin-light)
+  (load-theme 'kaolin-temple)
   (set-face-foreground 'highlight "black")
   (set-face-background 'highlight "LightBlue")
 #+end_src

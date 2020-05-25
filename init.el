@@ -194,7 +194,7 @@ pkill, etc."
 (use-package sublime-themes)
 
 (use-package gruvbox-theme)
-(load-theme 'kaolin-light)
+(load-theme 'kaolin-temple)
 (set-face-foreground 'highlight "black")
 (set-face-background 'highlight "LightBlue")
 
