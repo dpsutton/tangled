@@ -466,6 +466,7 @@ pkill, etc."
          ("C-j" . comint-send-input)))
 
 (use-package cider
+  :demand t
   :load-path "~/projects/dev/cider/"
   :init
   (load "cider-autoloads" t t)
@@ -507,21 +508,30 @@ pkill, etc."
 
 (bind-key "C-c t" 'cider-tooltip-show)
 
-(when (or personal/work-machine personal/mac-machine)
-  (use-package lsp-mode
-    :init
-    (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run"))
-    (setq lsp-enable-indentation nil)
-    ;; (setq lsp-enable-completion-at-point nil)
-    ;; (setq indent-region-function #'clojure-indent-function)
-    (add-hook 'clojure-mode-hook #'lsp)
-    (add-hook 'clojurec-mode-hook #'lsp)
-    (add-hook 'clojurescript-mode-hook #'lsp)
-    :config
-    (require 'lsp-clojure)
-    (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure"))
-    (add-to-list 'lsp-language-id-configuration '(clojurec-mode . "clojure"))
-    (add-to-list 'lsp-language-id-configuration '(clojurescript-mode . "clojurescript"))))
+(use-package lsp-mode
+  :load-path "~/projects/elisp/lsp-mode"
+  :hook ((clojure-mode . lsp)
+         (clojurec-mode . lsp)
+         (clojurescript-mode . lsp))
+  :init
+  ;; (setq lsp-enable-completion-at-point nil)
+  ;; (setq indent-region-function #'clojure-indent-function)
+  :config
+  (require 'lsp-clojure)
+  (dolist (m '(clojure-mode clojurec-mode clojurescript-mode))
+    (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
+  (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run")
+        lsp-enable-indentation nil)
+  ;; (add-hook 'clojure-mode-hook #'lsp)
+  ;; (add-hook 'clojurescript-mode-hook #'lsp)
+  ;; (add-hook 'clojurec-mode-hook #'lsp)
+  )
+
+(defun personal/stop-lsp ()
+  (interactive)
+  (remove-hook 'clojure-mode-hook #'lsp)
+  (remove-hook 'clojurec-mode-hook #'lsp)
+  (remove-hook 'clojurescript-mode-hook #'lsp))
 
 (when (or personal/work-machine personal/mac-machine)
   (use-package lsp-clojure-hydra
