@@ -441,6 +441,7 @@ pkill, etc."
   (setq clojure-toplevel-inside-comment-form t)
   (setq clojure-indent-style 'align-arguments)
   (put-clojure-indent 'dofor 1)
+  (put-clojure-indent 'do-at 1)
   (put-clojure-indent 'match 1)
 
   (put-clojure-indent 'context 1)
