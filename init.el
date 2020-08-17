@@ -194,8 +194,8 @@ pkill, etc."
 (use-package sublime-themes)
 
 (use-package gruvbox-theme)
-(load-theme 'kaolin-temple)
-(set-face-foreground 'highlight "black")
+(load-theme 'brin)
+;; (set-face-foreground 'highlight "black")
 (set-face-background 'highlight "LightBlue")
 
 (use-package projectile
@@ -612,7 +612,7 @@ pkill, etc."
   (resize-window-add-choice ?u (lambda () (dired "~/projects/aclaimant/acl"))
                             "Work projects"))
 
-(when personal/osx-p
+(when (and personal/osx-p (boundp mac-auto-operator-composition-mode))
   (mac-auto-operator-composition-mode))
 
 (use-package exec-path-from-shell

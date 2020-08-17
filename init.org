@@ -386,8 +386,8 @@ Themes love to make the background black. So we give a temp file, never to be se
   (use-package sublime-themes)
 
   (use-package gruvbox-theme)
-  (load-theme 'kaolin-temple)
-  (set-face-foreground 'highlight "black")
+  (load-theme 'brin)
+  ;; (set-face-foreground 'highlight "black")
   (set-face-background 'highlight "LightBlue")
 #+end_src
 
@@ -1077,7 +1077,7 @@ Then use ediprolog mode. Doesn't seem super necessary as prolog-mode allows me t
 *** DONE Ligatures
 
 #+BEGIN_SRC emacs-lisp
-  (when personal/osx-p
+  (when (and personal/osx-p (boundp mac-auto-operator-composition-mode))
     (mac-auto-operator-composition-mode))
 #+END_SRC
 
