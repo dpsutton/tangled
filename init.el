@@ -65,6 +65,8 @@ pkill, etc."
   (resize-window-add-choice ?a #'counsel-git "Search git files")
   (resize-window-add-choice ?h (lambda () (dired "~/projects/clojure"))
                             "Visit the clojure directory")
+  (resize-window-add-choice ?u (lambda () (dired "~/projects/clojure/metabase"))
+                            "Visit the work directory")
   (resize-window-add-choice ?d (lambda () (dired "~/projects/dev"))
                             "Visit dev directoryq")
   (resize-window-add-choice ?m (lambda () (resize-window--window-push))
@@ -236,7 +238,7 @@ pkill, etc."
   :init (company-quickhelp-mode)
   :config
   (setq company-quickhelp-use-propertized-text t)
-  (setq company-quickhelp-delay 0.2))
+  (setq company-quickhelp-delay 2.0))
 
 (use-package all-the-icons)
 (use-package neotree
@@ -509,24 +511,25 @@ pkill, etc."
 
 (bind-key "C-c t" 'cider-tooltip-show)
 
-(use-package lsp-mode
-  :load-path "~/projects/elisp/lsp-mode"
-  :hook ((clojure-mode . lsp)
-         (clojurec-mode . lsp)
-         (clojurescript-mode . lsp))
-  :init
-  ;; (setq lsp-enable-completion-at-point nil)
-  ;; (setq indent-region-function #'clojure-indent-function)
-  :config
-  (require 'lsp-clojure)
-  (dolist (m '(clojure-mode clojurec-mode clojurescript-mode))
-    (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
-  (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run")
-        lsp-enable-indentation nil)
-  ;; (add-hook 'clojure-mode-hook #'lsp)
-  ;; (add-hook 'clojurescript-mode-hook #'lsp)
-  ;; (add-hook 'clojurec-mode-hook #'lsp)
-  )
+(when personal/work-machine
+  (use-package lsp-mode
+    :load-path "~/projects/elisp/lsp-mode"
+    :hook ((clojure-mode . lsp)
+           (clojurec-mode . lsp)
+           (clojurescript-mode . lsp))
+    :init
+    (setq lsp-enable-completion-at-point nil)
+    ;; (setq indent-region-function #'clojure-indent-function)
+    :config
+    (require 'lsp-clojure)
+    (dolist (m '(clojure-mode clojurec-mode clojurescript-mode))
+      (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
+    (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run")
+          lsp-enable-indentation nil)
+    ;; (add-hook 'clojure-mode-hook #'lsp)
+    ;; (add-hook 'clojurescript-mode-hook #'lsp)
+    ;; (add-hook 'clojurec-mode-hook #'lsp)
+    ))
 
 (defun personal/stop-lsp ()
   (interactive)
@@ -586,33 +589,18 @@ pkill, etc."
               ("C-a" . crux-move-beginning-of-line)
               ([return] . indent-new-comment-line)))
 
-(when personal/work-machine
-  (defmacro aclaimant-cider-connection (name&dir port)
-    `(defun ,(intern (format "aclaimant-jack-in-%s" (symbol-name name&dir))) ()
-       ,(format "Jack into project %s and open its base directory." name&dir)
-       (interactive)
-       (let ((dir ,(format "~/projects/aclaimant/acl/src/aclaimant/"
-                           (symbol-name name&dir))))
-         (cider-connect (list :host "local.aclaimant.com" :port ,port
-                              :project-dir dir)))))
+(use-package tuareg)
 
-  (aclaimant-cider-connection service 7000)
-  (aclaimant-cider-connection jobs 7001)
-  (aclaimant-cider-connection alerter 7002)
-  (aclaimant-cider-connection twilio 7004)
-  (aclaimant-cider-connection paper-pusher 7005)
+(use-package caml)
 
-  (defun aclaimant-jack-in-dashboard ()
-    (interactive)
-    (cider-connect-cljs (list :host "localhost"
-                              :port 7888
-                              :cljs-repl-type 'figwheel-connected
-                              'project-dir "~/projects/aclaimant/acl")))
+(use-package merlin
+  :config
+  (add-to-list 'exec-path "/Users/dan/.opam/4.11.0/bin/")
+  (autoload 'merlin-mode "merlin" "Merlin mode" t)
+  (add-hook 'tuareg-mode-hook 'merlin-mode)
+  (add-hook 'caml-mode-hook 'merlin-mode))
 
-  (resize-window-add-choice ?u (lambda () (dired "~/projects/aclaimant/acl"))
-                            "Work projects"))
-
-(when (and personal/osx-p (boundp mac-auto-operator-composition-mode))
+(when (and personal/osx-p (boundp 'mac-auto-operator-composition-mode))
   (mac-auto-operator-composition-mode))
 
 (use-package exec-path-from-shell
@@ -622,9 +610,6 @@ pkill, etc."
 
 (when personal/osx-p
   (setq mac-command-modifier 'meta))
-
-(when personal/work-machine
-  (global-display-line-numbers-mode +1))
 
 (set-frame-font "Fira Code" nil t)
 (defun personal/set-font ()
