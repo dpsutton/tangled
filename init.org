@@ -387,9 +387,9 @@ Themes love to make the background black. So we give a temp file, never to be se
   (use-package sublime-themes)
 
   (use-package gruvbox-theme)
-  (load-theme 'brin)
+  (load-theme 'doom-spacegrey)
   ;; (set-face-foreground 'highlight "black")
-  (set-face-background 'highlight "LightBlue")
+  ;; (set-face-background 'highlight "LightBlue")
 #+end_src
 
 

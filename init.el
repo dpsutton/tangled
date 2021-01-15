@@ -196,9 +196,9 @@ pkill, etc."
 (use-package sublime-themes)
 
 (use-package gruvbox-theme)
-(load-theme 'brin)
+(load-theme 'doom-spacegrey)
 ;; (set-face-foreground 'highlight "black")
-(set-face-background 'highlight "LightBlue")
+;; (set-face-background 'highlight "LightBlue")
 
 (use-package projectile
   :defer 2
