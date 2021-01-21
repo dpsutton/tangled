@@ -127,8 +127,8 @@ This variable tells Emacs to prefer the =.el= file if it's newer, even if there 
               (lambda ()
                 (bind-key "C-c ;" 'resize-window org-mode-map)))
     (setq resize-window-swap-capital-and-lowercase-behavior t)
-    (resize-window-add-choice ?l #'ivy-switch-buffer "Switch buffers with ivy")
-    (resize-window-add-choice ?a #'counsel-git "Search git files")
+    (resize-window-add-choice ?l #'consult-buffer "Switch buffers with consult")
+    (resize-window-add-choice ?a #'projectile-find-file "Projectile find file")
     (resize-window-add-choice ?h (lambda () (dired "~/projects/clojure"))
                               "Visit the clojure directory")
     (resize-window-add-choice ?u (lambda () (dired "~/projects/clojure/metabase"))
@@ -376,7 +376,7 @@ Themes love to make the background black. So we give a temp file, never to be se
     (let* ((themes (custom-available-themes))
            (theme (symbol-name (nth (cl-random (length themes)) themes))))
       (message "Loading: %s" theme)
-      (counsel-load-theme-action theme)))
+      (consult-theme theme)))
 
   (bind-key "C-c l" #'personal/random-theme)
 #+end_src
@@ -653,6 +653,39 @@ This seems quite powerful but I never think to use it. Need to read the help men
     :bind ("C-o" . loccur-current))
 #+END_SRC
 
+** selectrum
+
+   #+begin_src emacs-lisp
+     (use-package selectrum
+       :demand t
+       :config
+       (selectrum-mode +1))
+
+     (use-package selectrum-prescient
+       :config
+       (prescient-persist-mode 1)
+       (selectrum-prescient-mode 1))
+
+     (use-package embark
+       :bind
+       ("C-c C-c" . embark-act-noexit))
+
+     (use-package consult
+       :config
+       (setq-default consult-project-root-function 'projectile-project-root)
+       :bind
+       ([remap switch-to-buffer] . 'consult-buffer)
+       ([remap switch-to-buffer-other-window] . 'consult-buffer-other-window))
+
+     (use-package embark-consult)
+
+     (use-package marginalia
+       :init
+       (marginalia-mode)
+       (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+       (advice-add #'marginalia-cycle :after
+                   (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
+   #+end_src
 ** Ivy
 
 Enable. In my last config i saw that i included =(setq enable-recursive-minibuffers t)= but I don't remember why I did this. Perhaps will be necessary? Sure is nice to have literate docs.
@@ -660,43 +693,14 @@ Enable. In my last config i saw that i included =(setq enable-recursive-minibuff
 Define my own "thing at point" ag function
 
 #+BEGIN_SRC emacs-lisp
-  (defun personal/ag-at-point ()
-    (interactive)
-    (let ((current-word (thing-at-point 'symbol)))
-      (counsel-ag current-word)))
-
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (use-package ivy
-    :demand t
-    :bind
-    ("C-c C-r" . ivy-resume)
-    :config
-    (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (use-package ivy-rich
-    :custom
-    (ivy-virtual-abbreviate 'full)
-    (ivy-rich-switch-buffer-align-virtual-buffer nil)
-    (ivy-rich-path-style 'full)
-    :config
-    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-    (ivy-rich-mode))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (use-package counsel
-    :bind
-    ("M-x" . counsel-M-x)
-    ("C-r" . personal/ag-at-point)
-    ("C-x C-f" . counsel-find-file)
-    ("C-x l" . counsel-locate)
-    ("C-S-o" . counsel-rhythmbox)
-    ("C-s" . swiper))
+  ;; (use-package counsel
+  ;;   :bind
+  ;;   ("M-x" . counsel-M-x)
+  ;;   ("C-r" . personal/ag-at-point)
+  ;;   ("C-x C-f" . counsel-find-file)
+  ;;   ("C-x l" . counsel-locate)
+  ;;   ("C-S-o" . counsel-rhythmbox)
+  ;;   ("C-s" . swiper))
 #+END_SRC
 * Coding
 
@@ -905,6 +909,26 @@ Clojure mode and CIDER are dev versions locally
            ))
 
 #+END_SRC
+
+I'm enjoying a way to use registers to send forms to the repl
+
+#+begin_src emacs-lisp
+  ;; ‘C-x r s <register-key>’ save to register
+  ;; 'C-c C-j x <register-key' to send to repl
+  (defun cider-insert-register-contents (register)
+    (interactive (list (register-read-with-preview "From register")))
+    (let ((form (get-register register)))
+      ;; could put form into a buffer and check if its parens are
+      ;; balanced
+      (if form
+          (cider-insert-in-repl form (not cider-invert-insert-eval-p))
+        (user-error "No saved form in register"))))
+
+  (define-key 'cider-insert-commands-map (kbd "x") #'cider-insert-register-contents)
+  (define-key 'cider-insert-commands-map (kbd "C-x") #'cider-insert-register-contents)
+  (define-key cider-repl-mode-map (kbd "C-c C-j") 'cider-insert-commands-map)
+
+#+end_src
 
 #+BEGIN_SRC emacs-lisp
   (defun personal/unhook-cider ()

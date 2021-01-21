@@ -61,8 +61,8 @@ pkill, etc."
             (lambda ()
               (bind-key "C-c ;" 'resize-window org-mode-map)))
   (setq resize-window-swap-capital-and-lowercase-behavior t)
-  (resize-window-add-choice ?l #'ivy-switch-buffer "Switch buffers with ivy")
-  (resize-window-add-choice ?a #'counsel-git "Search git files")
+  (resize-window-add-choice ?l #'consult-buffer "Switch buffers with consult")
+  (resize-window-add-choice ?a #'projectile-find-file "Projectile find file")
   (resize-window-add-choice ?h (lambda () (dired "~/projects/clojure"))
                             "Visit the clojure directory")
   (resize-window-add-choice ?u (lambda () (dired "~/projects/clojure/metabase"))
@@ -187,7 +187,7 @@ pkill, etc."
   (let* ((themes (custom-available-themes))
          (theme (symbol-name (nth (cl-random (length themes)) themes))))
     (message "Loading: %s" theme)
-    (counsel-load-theme-action theme)))
+    (consult-theme theme)))
 
 (bind-key "C-c l" #'personal/random-theme)
 
@@ -343,36 +343,44 @@ pkill, etc."
 (use-package loccur
   :bind ("C-o" . loccur-current))
 
-(defun personal/ag-at-point ()
-  (interactive)
-  (let ((current-word (thing-at-point 'symbol)))
-    (counsel-ag current-word)))
-
-(use-package ivy
+(use-package selectrum
   :demand t
-  :bind
-  ("C-c C-r" . ivy-resume)
   :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t))
+  (selectrum-mode +1))
 
-(use-package ivy-rich
-  :custom
-  (ivy-virtual-abbreviate 'full)
-  (ivy-rich-switch-buffer-align-virtual-buffer nil)
-  (ivy-rich-path-style 'full)
+(use-package selectrum-prescient
   :config
-  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-  (ivy-rich-mode))
+  (prescient-persist-mode 1)
+  (selectrum-prescient-mode 1))
 
-(use-package counsel
+(use-package embark
   :bind
-  ("M-x" . counsel-M-x)
-  ("C-r" . personal/ag-at-point)
-  ("C-x C-f" . counsel-find-file)
-  ("C-x l" . counsel-locate)
-  ("C-S-o" . counsel-rhythmbox)
-  ("C-s" . swiper))
+  ("C-c C-c" . embark-act-noexit))
+
+(use-package consult
+  :config
+  (setq-default consult-project-root-function 'projectile-project-root)
+  :bind
+  ([remap switch-to-buffer] . 'consult-buffer)
+  ([remap switch-to-buffer-other-window] . 'consult-buffer-other-window))
+
+(use-package embark-consult)
+
+(use-package marginalia
+  :init
+  (marginalia-mode)
+  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  (advice-add #'marginalia-cycle :after
+              (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
+
+;; (use-package counsel
+;;   :bind
+;;   ("M-x" . counsel-M-x)
+;;   ("C-r" . personal/ag-at-point)
+;;   ("C-x C-f" . counsel-find-file)
+;;   ("C-x l" . counsel-locate)
+;;   ("C-S-o" . counsel-rhythmbox)
+;;   ("C-s" . swiper))
 
 (use-package paredit)
 
@@ -489,6 +497,21 @@ pkill, etc."
          ;; paredit-mode-map
          ;; ("C-j" . cider-repl-return)
          ))
+
+;; ‘C-x r s <register-key>’ save to register
+;; 'C-c C-j x <register-key' to send to repl
+(defun cider-insert-register-contents (register)
+  (interactive (list (register-read-with-preview "From register")))
+  (let ((form (get-register register)))
+    ;; could put form into a buffer and check if its parens are
+    ;; balanced
+    (if form
+        (cider-insert-in-repl form (not cider-invert-insert-eval-p))
+      (user-error "No saved form in register"))))
+
+(define-key 'cider-insert-commands-map (kbd "x") #'cider-insert-register-contents)
+(define-key 'cider-insert-commands-map (kbd "C-x") #'cider-insert-register-contents)
+(define-key cider-repl-mode-map (kbd "C-c C-j") 'cider-insert-commands-map)
 
 (defun personal/unhook-cider ()
   (seq-doseq (buffer (buffer-list))
@@ -621,3 +644,4 @@ pkill, etc."
 (add-hook 'emacs-startup-hook #'personal/set-font)
 
 (setq gc-cons-threshold personal/original-gc-threshold)
+(put 'erase-buffer 'disabled nil)
