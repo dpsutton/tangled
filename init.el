@@ -373,14 +373,17 @@ pkill, etc."
   (advice-add #'marginalia-cycle :after
               (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit)))))
 
-;; (use-package counsel
-;;   :bind
-;;   ("M-x" . counsel-M-x)
-;;   ("C-r" . personal/ag-at-point)
-;;   ("C-x C-f" . counsel-find-file)
-;;   ("C-x l" . counsel-locate)
-;;   ("C-S-o" . counsel-rhythmbox)
-;;   ("C-s" . swiper))
+(defun personal/ag-at-point ()
+  (interactive)
+  (let ((current-word (thing-at-point 'symbol)))
+    (counsel-ag current-word)))
+
+(use-package ivy)
+
+(use-package counsel
+  :bind
+  ("C-r" . personal/ag-at-point)
+  ("C-s" . swiper))
 
 (use-package paredit)
 

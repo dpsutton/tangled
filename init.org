@@ -690,17 +690,23 @@ This seems quite powerful but I never think to use it. Need to read the help men
 
 Enable. In my last config i saw that i included =(setq enable-recursive-minibuffers t)= but I don't remember why I did this. Perhaps will be necessary? Sure is nice to have literate docs.
 
-Define my own "thing at point" ag function
+Define my own "thing at point" ag function.
+
+Keep ivy around because I want to use counsel's ~counsel-ag~ which is super useful and fast, and swiper.
+
 
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package counsel
-  ;;   :bind
-  ;;   ("M-x" . counsel-M-x)
-  ;;   ("C-r" . personal/ag-at-point)
-  ;;   ("C-x C-f" . counsel-find-file)
-  ;;   ("C-x l" . counsel-locate)
-  ;;   ("C-S-o" . counsel-rhythmbox)
-  ;;   ("C-s" . swiper))
+  (defun personal/ag-at-point ()
+    (interactive)
+    (let ((current-word (thing-at-point 'symbol)))
+      (counsel-ag current-word)))
+
+  (use-package ivy)
+
+  (use-package counsel
+    :bind
+    ("C-r" . personal/ag-at-point)
+    ("C-s" . swiper))
 #+END_SRC
 * Coding
 
