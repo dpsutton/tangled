@@ -139,7 +139,7 @@ This variable tells Emacs to prefer the =.el= file if it's newer, even if there 
                               "Push window state onto window stack")
     (resize-window-add-choice ?v (lambda () (find-file "~/projects/projects.org"))
                               "Edit project file")
-    (resize-window-add-choice ?j (lambda () (crux-swap-windows 1)) "Swap window positions"))
+    (resize-window-add-choice ?j (lambda () (crux-transpose-windows 1)) "Swap window positions"))
 #+END_SRC
 
 - turn off the stupid system bell but make it visible!

@@ -73,7 +73,7 @@ pkill, etc."
                             "Push window state onto window stack")
   (resize-window-add-choice ?v (lambda () (find-file "~/projects/projects.org"))
                             "Edit project file")
-  (resize-window-add-choice ?j (lambda () (crux-swap-windows 1)) "Swap window positions"))
+  (resize-window-add-choice ?j (lambda () (crux-transpose-windows 1)) "Swap window positions"))
 
 (setq visible-bell nil
       ring-bell-function 'flash-mode-line)
