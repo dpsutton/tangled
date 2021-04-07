@@ -65,14 +65,15 @@ pkill, etc."
   (resize-window-add-choice ?a #'projectile-find-file "Projectile find file")
   (resize-window-add-choice ?h (lambda () (dired "~/projects/clojure"))
                             "Visit the clojure directory")
-  (resize-window-add-choice ?u (lambda () (dired "~/projects/clojure/metabase"))
+  (resize-window-add-choice ?u (lambda () (dired "~/projects/work/metabase"))
                             "Visit the work directory")
   (resize-window-add-choice ?d (lambda () (dired "~/projects/dev"))
                             "Visit dev directoryq")
   (resize-window-add-choice ?m (lambda () (resize-window--window-push))
                             "Push window state onto window stack")
   (resize-window-add-choice ?v (lambda () (find-file "~/projects/projects.org"))
-                            "Edit project file"))
+                            "Edit project file")
+  (resize-window-add-choice ?j (lambda () (crux-swap-windows 1)) "Swap window positions"))
 
 (setq visible-bell nil
       ring-bell-function 'flash-mode-line)
@@ -151,8 +152,10 @@ pkill, etc."
 (use-package diminish
   :defer 1)
 
-(use-package minions
-  :config (minions-mode))
+;; (use-package minions
+;;   :config (minions-mode)
+;;   (add-to-list 'minions-direct 'inf-clojure-minor-mode)
+;;   (add-to-list 'minions-whitelist '(inf-clojure-minor-mode)))
 
 (use-package moody
   :config
@@ -187,7 +190,7 @@ pkill, etc."
   (let* ((themes (custom-available-themes))
          (theme (symbol-name (nth (cl-random (length themes)) themes))))
     (message "Loading: %s" theme)
-    (consult-theme theme)))
+    (counsel-load-theme-action theme)))
 
 (bind-key "C-c l" #'personal/random-theme)
 
@@ -390,7 +393,11 @@ pkill, etc."
 (use-package rainbow-delimiters)
 
 (use-package magit
-  :bind ("C-x g" . magit-status))
+  :bind (("C-x g" . magit-status)
+         :map
+         magit-status-mode-map
+         ("M-RET" . magit-diff-visit-file-other-window)
+         ("C-RET" . magit-diff-visit-file-other-window)))
 
 (use-package eldoc
   :diminish
@@ -471,13 +478,34 @@ pkill, etc."
 ;; testing dependency for inf-clojure
 (use-package assess)
 
+(defun personal/repl-requires ()
+  "Send repl requires."
+  (interactive)
+  (when-let ((inf-proc (inf-clojure-proc 'no-error)))
+    (inf-clojure--send-string inf-proc "(apply require clojure.main/repl-requires)")))
+
+(defun inf-clojure-send-input ()
+  "Send."
+  (interactive)
+  (let ((clojure-process (inf-clojure-proc)))
+    (with-current-buffer (process-buffer clojure-process)
+      (comint-goto-process-mark)
+      (while (looking-at-p "\s*\n")
+        (forward-line))
+      (set-marker (process-mark clojure-process) (point))
+      (comint-send-input t))))
+
 (use-package inf-clojure
   :demand t
   :load-path "~/projects/dev/inf-clojure/"
   :bind (:map
          inf-clojure-mode-map
          ("RET" . newline)
-         ("C-j" . comint-send-input)))
+         ("C-j" . inf-clojure-send-input)
+         ("C-c h" . personal/repl-requires)
+         :map
+         inf-clojure-minor-mode-map
+         ("C-c h" . personal/repl-requires)))
 
 (use-package cider
   :demand t
@@ -487,6 +515,7 @@ pkill, etc."
   :config
   (setq cider-invert-insert-eval-p t)
   (setq cider-switch-to-repl-on-insert nil)
+  (setq cider-auto-select-test-report-buffer nil)
   (setq cider-font-lock-dynamically t)
   (setq cider-show-error-buffer nil)
   (setq cider-repl-display-help-banner nil)
@@ -496,6 +525,7 @@ pkill, etc."
          cider-repl-mode-map
          ("RET" . cider-repl-newline-and-indent)
          ("C-j" . cider-repl-return)
+         ("C-c SPC" . clojure-align)
          ;; :map
          ;; paredit-mode-map
          ;; ("C-j" . cider-repl-return)
@@ -537,25 +567,20 @@ pkill, etc."
 
 (bind-key "C-c t" 'cider-tooltip-show)
 
-(when personal/work-machine
-  (use-package lsp-mode
-    :load-path "~/projects/elisp/lsp-mode"
-    :hook ((clojure-mode . lsp)
-           (clojurec-mode . lsp)
-           (clojurescript-mode . lsp))
-    :init
-    (setq lsp-enable-completion-at-point nil)
-    ;; (setq indent-region-function #'clojure-indent-function)
-    :config
-    (require 'lsp-clojure)
-    (dolist (m '(clojure-mode clojurec-mode clojurescript-mode))
-      (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
-    (setq lsp-clojure-server-command '("bash" "-c" "cd ~/projects/clojure/clojure-lsp && lein run")
-          lsp-enable-indentation nil)
-    ;; (add-hook 'clojure-mode-hook #'lsp)
-    ;; (add-hook 'clojurescript-mode-hook #'lsp)
-    ;; (add-hook 'clojurec-mode-hook #'lsp)
-    ))
+(use-package lsp-mode
+  :ensure t
+  :hook ((clojure-mode . lsp)
+         (clojurec-mode . lsp)
+         (clojurescript-mode . lsp))
+  :config
+  (setq lsp-enable-indentation nil)
+  (setq lsp-enable-file-watchers nil) ;; annoying and i can't specify paths
+  ;; add paths to your local installation of project mgmt tools, like lein
+  (dolist (m '(clojure-mode
+               clojurec-mode
+               clojurescript-mode
+               clojurex-mode))
+     (add-to-list 'lsp-language-id-configuration `(,m . "clojure"))))
 
 (defun personal/stop-lsp ()
   (interactive)
@@ -563,14 +588,25 @@ pkill, etc."
   (remove-hook 'clojurec-mode-hook #'lsp)
   (remove-hook 'clojurescript-mode-hook #'lsp))
 
-(when (or personal/work-machine personal/mac-machine)
-  (use-package lsp-clojure-hydra
-    :after (lsp-mode lsp-mode cider)
-    :load-path "~/projects/elisp/lsp-clojure-hydra"
-    :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
-           :map
-           cider-mode-map
-           ("C-c C-l" . lsp-clojure-refactor-menu/body))))
+(use-package lsp-ui
+  :ensure t
+  :after lsp-mode
+  :init
+  (setq lsp-ui-doc-enable nil)
+  (setq lsp-ui-sideline-show-code-actions nil)
+  :bind ("C-c C-d" . 'lsp-ui-doc-show)
+  :commands lsp-ui-mode)
+
+(use-package lsp-clojure-hydra
+  :after (lsp-mode cider)
+  :load-path "~/projects/elisp/lsp-clojure-hydra"
+  :bind (("C-c C-l" . lsp-clojure-refactor-menu/body)
+         :map
+         cider-mode-map
+         ("C-c C-l" . lsp-clojure-refactor-menu/body)
+         :map
+         inf-clojure-minor-mode-map
+         ("C-c C-l" . lsp-clojure-refactor-menu/body)))
 
 (use-package haskell-mode)
 
@@ -639,6 +675,7 @@ pkill, etc."
 
 (set-frame-font "Fira Code" nil t)
 (defun personal/set-font ()
+  (set-frame-font "Fira Code" nil t)
   (interactive)
   (set-face-attribute 'default nil :height (cond
                                             (personal/linux-machine 130)
@@ -647,4 +684,3 @@ pkill, etc."
 (add-hook 'emacs-startup-hook #'personal/set-font)
 
 (setq gc-cons-threshold personal/original-gc-threshold)
-(put 'erase-buffer 'disabled nil)
