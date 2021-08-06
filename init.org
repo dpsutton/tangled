@@ -920,6 +920,20 @@ Clojure mode and CIDER are dev versions locally
            inf-clojure-minor-mode-map
            ("C-c h" . personal/repl-requires)))
 
+  ;; ‘C-x r s <register-key>’ save to register
+  ;; 'C-c C-j x <register-key' to send to repl
+  (defun inf-clojure-insert-register-contents (register)
+    (interactive (list (register-read-with-preview "From register")))
+    (let ((form (get-register register)))
+      ;; could put form into a buffer and check if its parens are
+      ;; balanced
+      (if form
+          (inf-clojure-insert-and-eval form)
+        (user-error "No saved form in register"))))
+  (define-key 'inf-clojure-insert-commands-map (kbd "x") #'inf-clojure-insert-register-contents)
+  (define-key 'inf-clojure-insert-commands-map (kbd "C-x") #'inf-clojure-insert-register-contents)
+  (define-key inf-clojure-mode-map (kbd "C-c C-j") 'inf-clojure-insert-commands-map)
+
   (use-package cider
     :demand t
     :load-path "~/projects/dev/cider/"
@@ -1001,6 +1015,8 @@ Use lsp-mode with the excellent lsp-clojure package.
     :hook ((clojure-mode . lsp)
            (clojurec-mode . lsp)
            (clojurescript-mode . lsp))
+    :init
+    (setq lsp-keymap-prefix "C-M-l")
     :config
     (setq lsp-enable-indentation nil)
     (setq lsp-enable-file-watchers nil) ;; annoying and i can't specify paths
