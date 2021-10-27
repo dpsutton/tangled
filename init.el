@@ -495,6 +495,17 @@ pkill, etc."
       (set-marker (process-mark clojure-process) (point))
       (comint-send-input t))))
 
+(defun personal/insert-comment ()
+  (interactive)
+  (end-of-defun)
+  (insert "\n")
+  (insert "(comment\n  )\n")
+  (clojure-backward-logical-sexp)
+  (forward-char 1)
+  (clojure-forward-logical-sexp)
+  (insert "\n")
+  (indent-according-to-mode))
+
 (use-package inf-clojure
   :demand t
   :load-path "~/projects/dev/inf-clojure/"
@@ -505,7 +516,8 @@ pkill, etc."
          ("C-c h" . personal/repl-requires)
          :map
          inf-clojure-minor-mode-map
-         ("C-c h" . personal/repl-requires)))
+         ("C-c h" . personal/repl-requires)
+         ("C-M-i" . personal/insert-comment)))
 
 ;; ‘C-x r s <register-key>’ save to register
 ;; 'C-c C-j x <register-key' to send to repl
