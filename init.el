@@ -703,8 +703,8 @@ pkill, etc."
 
 (set-frame-font "Fira Code" nil t)
 (defun personal/set-font ()
-  (set-frame-font "Fira Code" nil t)
   (interactive)
+  (set-frame-font "Fira Code" nil t)
   (set-face-attribute 'default nil :height (cond
                                             (personal/linux-machine 130)
                                             (personal/mac-machine 150)

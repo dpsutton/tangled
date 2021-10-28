@@ -1201,8 +1201,8 @@ For some reason this was getting lost in the startup shenanigans so we set it on
 #+BEGIN_SRC emacs-lisp
   (set-frame-font "Fira Code" nil t)
   (defun personal/set-font ()
-    (set-frame-font "Fira Code" nil t)
     (interactive)
+    (set-frame-font "Fira Code" nil t)
     (set-face-attribute 'default nil :height (cond
                                               (personal/linux-machine 130)
                                               (personal/mac-machine 150)
