@@ -476,6 +476,9 @@ pkill, etc."
   (put-clojure-indent 'PATCH 1)
   (put-clojure-indent 'DELETE 1))
 
+;; babashka shebang support #!/usr/bin/env bb
+(add-to-list 'interpreter-mode-alist '("bb" . clojure-mode))
+
 ;; testing dependency for inf-clojure
 (use-package assess)
 
@@ -510,6 +513,8 @@ pkill, etc."
 (use-package inf-clojure
   :demand t
   :load-path "~/projects/dev/inf-clojure/"
+  :config
+  (setq inf-clojure-enable-eldoc nil)
   :bind (:map
          inf-clojure-mode-map
          ("RET" . newline)
@@ -517,6 +522,7 @@ pkill, etc."
          ("C-c h" . personal/repl-requires)
          :map
          inf-clojure-minor-mode-map
+         ("C-c o" . inf-clojure-clear-repl-buffer)
          ("C-c h" . personal/repl-requires)
          ("C-M-i" . personal/insert-comment)))
 
