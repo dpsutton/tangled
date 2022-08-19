@@ -536,8 +536,8 @@ pkill, etc."
     (if form
         (inf-clojure-insert-and-eval form)
       (user-error "No saved form in register"))))
-(define-key 'inf-clojure-insert-commands-map (kbd "x") #'inf-clojure-insert-register-contents)
-(define-key 'inf-clojure-insert-commands-map (kbd "C-x") #'inf-clojure-insert-register-contents)
+(define-key inf-clojure-insert-commands-map (kbd "x") #'inf-clojure-insert-register-contents)
+(define-key inf-clojure-insert-commands-map (kbd "C-x") #'inf-clojure-insert-register-contents)
 (define-key inf-clojure-mode-map (kbd "C-c C-j") 'inf-clojure-insert-commands-map)
 
 (use-package cider
