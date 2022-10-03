@@ -520,6 +520,7 @@ pkill, etc."
          ("RET" . newline)
          ("C-j" . inf-clojure-send-input)
          ("C-c h" . personal/repl-requires)
+         ("C-c o" . inf-clojure-clear-repl-buffer)
          :map
          inf-clojure-minor-mode-map
          ("C-c o" . inf-clojure-clear-repl-buffer)
@@ -538,7 +539,7 @@ pkill, etc."
       (user-error "No saved form in register"))))
 (define-key inf-clojure-insert-commands-map (kbd "x") #'inf-clojure-insert-register-contents)
 (define-key inf-clojure-insert-commands-map (kbd "C-x") #'inf-clojure-insert-register-contents)
-(define-key inf-clojure-mode-map (kbd "C-c C-j") 'inf-clojure-insert-commands-map)
+(define-key inf-clojure-mode-map (kbd "C-c C-j") inf-clojure-insert-commands-map)
 
 (use-package cider
   :demand t
