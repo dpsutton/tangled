@@ -488,6 +488,26 @@ pkill, etc."
   (when-let ((inf-proc (inf-clojure-proc 'no-error)))
     (inf-clojure--send-string inf-proc "(apply require clojure.main/repl-requires)")))
 
+(defun personal/work-repl ()
+  "start a work repl on port 50505"
+  (interactive)
+  (inf-clojure-connect "localhost" 50505 'clojure)
+  (let ((requires "(require '[clojure.core.server :as server]
+         'clojure.main
+         '[clojure.string :as str]
+         'clojure.test
+         '[fipp.edn :as fipp])")
+        (sub-repl "(clojure.main/repl
+ :prompt (fn [] (printf \"%s=> \" (peek (str/split (str *ns*) #\"\\.\"))))
+ :eval (fn [f] (binding [clojure.test/*test-out* *out*] (eval f)))
+ :read server/repl-read
+ :print fipp/pprint)"))
+    (inf-clojure-insert-and-eval requires)
+    (sit-for 0.2)
+    (inf-clojure-insert-and-eval sub-repl)
+    (sit-for 0.2)
+    (inf-clojure-insert-and-eval ":ready")))
+
 (defun inf-clojure-send-input ()
   "Send."
   (interactive)
