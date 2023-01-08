@@ -491,7 +491,8 @@ pkill, etc."
 (defun personal/work-repl ()
   "start a work repl on port 50505"
   (interactive)
-  (inf-clojure-connect "localhost" 50505 'clojure)
+  (let ((inf-clojure-custom-repl-type 'clojure))
+    (inf-clojure-connect "localhost" 50505))
   (let ((requires "(require '[clojure.core.server :as server]
          'clojure.main
          '[clojure.string :as str]
@@ -502,6 +503,27 @@ pkill, etc."
  :eval (fn [f] (binding [clojure.test/*test-out* *out*] (eval f)))
  :read server/repl-read
  :print fipp/pprint)"))
+    (inf-clojure-insert-and-eval requires)
+    (sit-for 0.2)
+    (inf-clojure-insert-and-eval sub-repl)
+    (sit-for 0.2)
+    (inf-clojure-insert-and-eval ":ready")))
+
+(defun personal/repl (port)
+  "Connect to a clojure repl at PORT."
+  (interactive "nRepl port: ")
+  (let ((requires "(require '[clojure.string :as str]
+         '[clojure.core.server :as server]
+         '[clojure.pprint :as pprint]
+         'clojure.test)"
+                  )
+        (sub-repl "(clojure.main/repl
+ :prompt (fn [] (printf \"%s=> \" (peek (str/split (str *ns*) #\"\\.\"))))
+ :read server/repl-read
+ :eval (fn [form] (binding [clojure.test/*test-out* *out*] (eval form)))
+ :print clojure.pprint/pprint)"))
+    (let ((inf-clojure-custom-repl-type 'clojure))
+      (inf-clojure-connect "localhost" port))
     (inf-clojure-insert-and-eval requires)
     (sit-for 0.2)
     (inf-clojure-insert-and-eval sub-repl)
