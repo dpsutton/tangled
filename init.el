@@ -494,15 +494,15 @@ pkill, etc."
   (let ((inf-clojure-custom-repl-type 'clojure))
     (inf-clojure-connect "localhost" 50505))
   (let ((requires "(require '[clojure.core.server :as server]
-         'clojure.main
-         '[clojure.string :as str]
-         'clojure.test
-         '[fipp.edn :as fipp])")
+           'clojure.main
+           '[clojure.string :as str]
+           'clojure.test
+           '[fipp.edn :as fipp])")
         (sub-repl "(clojure.main/repl
- :prompt (fn [] (printf \"%s=> \" (peek (str/split (str *ns*) #\"\\.\"))))
- :eval (fn [f] (binding [clojure.test/*test-out* *out*] (eval f)))
- :read server/repl-read
- :print fipp/pprint)"))
+   :prompt (fn [] (printf \"%s=> \" (peek (str/split (str *ns*) #\"\\.\"))))
+   :eval (fn [f] (binding [clojure.test/*test-out* *out*] (eval f)))
+   :read server/repl-read
+   :print fipp/pprint)"))
     (inf-clojure-insert-and-eval requires)
     (sit-for 0.2)
     (inf-clojure-insert-and-eval sub-repl)
@@ -513,15 +513,15 @@ pkill, etc."
   "Connect to a clojure repl at PORT."
   (interactive "nRepl port: ")
   (let ((requires "(require '[clojure.string :as str]
-         '[clojure.core.server :as server]
-         '[clojure.pprint :as pprint]
-         'clojure.test)"
+           '[clojure.core.server :as server]
+           '[clojure.pprint :as pprint]
+           'clojure.test)"
                   )
         (sub-repl "(clojure.main/repl
- :prompt (fn [] (printf \"%s=> \" (peek (str/split (str *ns*) #\"\\.\"))))
- :read server/repl-read
- :eval (fn [form] (binding [clojure.test/*test-out* *out*] (eval form)))
- :print clojure.pprint/pprint)"))
+   :prompt (fn [] (printf \"%s=> \" (peek (str/split (str *ns*) #\"\\.\"))))
+   :read server/repl-read
+   :eval (fn [form] (binding [clojure.test/*test-out* *out*] (eval form)))
+   :print clojure.pprint/pprint)"))
     (let ((inf-clojure-custom-repl-type 'clojure))
       (inf-clojure-connect "localhost" port))
     (inf-clojure-insert-and-eval requires)
@@ -529,6 +529,19 @@ pkill, etc."
     (inf-clojure-insert-and-eval sub-repl)
     (sit-for 0.2)
     (inf-clojure-insert-and-eval ":ready")))
+
+(defun personal/set-test ()
+  (interactive)
+  (if (clojure-top-level-form-p "deftest")
+      (save-excursion
+        (beginning-of-defun)
+        (forward-char 1)
+        (clojure-forward-logical-sexp)
+        (clojure-forward-logical-sexp)
+        (clojure-backward-logical-sexp)
+        (set-register ?i (s-concat "(" (thing-at-point 'symbol) ")"))
+        (message "set i register to: %s" (get-register ?i)))
+    (message "not looking at test")))
 
 (defun inf-clojure-send-input ()
   "Send."
@@ -567,18 +580,20 @@ pkill, etc."
          inf-clojure-minor-mode-map
          ("C-c o" . inf-clojure-clear-repl-buffer)
          ("C-c h" . personal/repl-requires)
+         ("C-c t" . personal/set-test)
+         ("C-c C-t" . personal/set-test)
          ("C-M-i" . personal/insert-comment)))
 
 ;; ‘C-x r s <register-key>’ save to register
 ;; 'C-c C-j x <register-key' to send to repl
 (defun inf-clojure-insert-register-contents (register)
-  (interactive (list (register-read-with-preview "From register")))
-  (let ((form (get-register register)))
-    ;; could put form into a buffer and check if its parens are
-    ;; balanced
-    (if form
-        (inf-clojure-insert-and-eval form)
-      (user-error "No saved form in register"))))
+    (interactive (list (register-read-with-preview "From register")))
+    (let ((form (get-register register)))
+      ;; could put form into a buffer and check if its parens are
+      ;; balanced
+      (if form
+          (inf-clojure-insert-and-eval form)
+        (user-error "No saved form in register"))))
 (define-key inf-clojure-insert-commands-map (kbd "x") #'inf-clojure-insert-register-contents)
 (define-key inf-clojure-insert-commands-map (kbd "C-x") #'inf-clojure-insert-register-contents)
 (define-key inf-clojure-mode-map (kbd "C-c C-j") inf-clojure-insert-commands-map)
