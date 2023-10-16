@@ -539,7 +539,7 @@ pkill, etc."
         (clojure-forward-logical-sexp)
         (clojure-forward-logical-sexp)
         (clojure-backward-logical-sexp)
-        (set-register ?i (s-concat "(" (thing-at-point 'symbol) ")"))
+        (set-register ?i (s-concat "(clojure.test/run-test " (thing-at-point 'symbol) ")"))
         (message "set i register to: %s" (get-register ?i)))
     (message "not looking at test")))
 
