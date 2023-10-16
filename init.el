@@ -234,7 +234,7 @@ pkill, etc."
   :hook
   (after-init . global-company-mode)
   :config
-  (setq company-idle-delay 0.3)
+  (setq company-idle-delay 0.5)
   (setq company-minimum-prefix-length 3))
 
 (use-package company-quickhelp
