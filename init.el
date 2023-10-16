@@ -481,6 +481,7 @@ pkill, etc."
 
 ;; testing dependency for inf-clojure
 (use-package assess)
+(require 'inf-clojure)
 
 (defun personal/repl-requires ()
   "Send repl requires."
@@ -488,11 +489,8 @@ pkill, etc."
   (when-let ((inf-proc (inf-clojure-proc 'no-error)))
     (inf-clojure--send-string inf-proc "(apply require clojure.main/repl-requires)")))
 
-(defun personal/work-repl ()
-  "start a work repl on port 50505"
-  (interactive)
-  (let ((inf-clojure-custom-repl-type 'clojure))
-    (inf-clojure-connect "localhost" 50505))
+(defun personal/send-fipp-repl ()
+  "Setup a fipp subrepl."
   (let ((requires "(require '[clojure.core.server :as server]
            'clojure.main
            '[clojure.string :as str]
@@ -509,9 +507,8 @@ pkill, etc."
     (sit-for 0.2)
     (inf-clojure-insert-and-eval ":ready")))
 
-(defun personal/repl (port)
-  "Connect to a clojure repl at PORT."
-  (interactive "nRepl port: ")
+(defun personal/send-pp-repl ()
+  "Setup a clojure.pprint/pprint subrepl."
   (let ((requires "(require '[clojure.string :as str]
            '[clojure.core.server :as server]
            '[clojure.pprint :as pprint]
@@ -522,13 +519,25 @@ pkill, etc."
    :read server/repl-read
    :eval (fn [form] (binding [clojure.test/*test-out* *out*] (eval form)))
    :print clojure.pprint/pprint)"))
-    (let ((inf-clojure-custom-repl-type 'clojure))
-      (inf-clojure-connect "localhost" port))
     (inf-clojure-insert-and-eval requires)
     (sit-for 0.2)
     (inf-clojure-insert-and-eval sub-repl)
     (sit-for 0.2)
     (inf-clojure-insert-and-eval ":ready")))
+
+(defun personal/work-repl ()
+  "start a work repl on port 50505"
+  (interactive)
+  (let ((inf-clojure-custom-repl-type 'clojure))
+    (inf-clojure-connect "localhost" 50505))
+  (personal/send-fipp-repl))
+
+(defun personal/repl (port)
+  "Connect to a clojure repl at PORT."
+  (interactive "nRepl port: ")
+  (let ((inf-clojure-custom-repl-type 'clojure))
+    (inf-clojure-connect "localhost" port))
+  (personal/send-pp-repl))
 
 (defun personal/set-test ()
   (interactive)
