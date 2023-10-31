@@ -481,6 +481,50 @@ pkill, etc."
 
 ;; testing dependency for inf-clojure
 (use-package assess)
+
+(use-package inf-clojure
+  :demand t
+  :load-path "~/projects/dev/inf-clojure/"
+  :config
+  (setq inf-clojure-enable-eldoc nil)
+  :bind (:map
+         inf-clojure-mode-map
+         ("RET" . newline)
+         ("C-j" . inf-clojure-send-input)
+         ("C-c h" . personal/repl-requires)
+         ("C-c o" . inf-clojure-clear-repl-buffer)
+         :map
+         inf-clojure-minor-mode-map
+         ("C-c o" . inf-clojure-clear-repl-buffer)
+         ("C-c h" . personal/repl-requires)
+         ("C-c t" . personal/set-test)
+         ("C-c C-t" . personal/set-test)
+         ("C-M-i" . personal/insert-comment)))
+
+(use-package cider
+  :demand t
+  :load-path "~/projects/dev/cider/"
+  :init
+  (load "cider-autoloads" t t)
+  :config
+  (setq cider-invert-insert-eval-p t)
+  (setq cider-switch-to-repl-on-insert nil)
+  (setq cider-auto-select-test-report-buffer nil)
+  (setq cider-font-lock-dynamically t)
+  (setq cider-show-error-buffer nil)
+  (setq cider-repl-display-help-banner nil)
+  (setq cider-repl-pop-to-buffer-on-connect 'display-only)
+  (setq cider-repl-tab-command (lambda () (company-indent-or-complete-common nil)))
+  :bind (:map
+         cider-repl-mode-map
+         ("RET" . cider-repl-newline-and-indent)
+         ("C-j" . cider-repl-return)
+         ("C-c SPC" . clojure-align)
+         ;; :map
+         ;; paredit-mode-map
+         ;; ("C-j" . cider-repl-return)
+         ))
+
 (require 'inf-clojure)
 
 (defun personal/repl-requires ()
@@ -574,62 +618,19 @@ pkill, etc."
   (insert "\n")
   (indent-according-to-mode))
 
-(use-package inf-clojure
-  :demand t
-  :load-path "~/projects/dev/inf-clojure/"
-  :config
-  (setq inf-clojure-enable-eldoc nil)
-  :bind (:map
-         inf-clojure-mode-map
-         ("RET" . newline)
-         ("C-j" . inf-clojure-send-input)
-         ("C-c h" . personal/repl-requires)
-         ("C-c o" . inf-clojure-clear-repl-buffer)
-         :map
-         inf-clojure-minor-mode-map
-         ("C-c o" . inf-clojure-clear-repl-buffer)
-         ("C-c h" . personal/repl-requires)
-         ("C-c t" . personal/set-test)
-         ("C-c C-t" . personal/set-test)
-         ("C-M-i" . personal/insert-comment)))
-
 ;; ‘C-x r s <register-key>’ save to register
 ;; 'C-c C-j x <register-key' to send to repl
 (defun inf-clojure-insert-register-contents (register)
-    (interactive (list (register-read-with-preview "From register")))
-    (let ((form (get-register register)))
-      ;; could put form into a buffer and check if its parens are
-      ;; balanced
-      (if form
-          (inf-clojure-insert-and-eval form)
-        (user-error "No saved form in register"))))
+  (interactive (list (register-read-with-preview "From register")))
+  (let ((form (get-register register)))
+    ;; could put form into a buffer and check if its parens are
+    ;; balanced
+    (if form
+        (inf-clojure-insert-and-eval form)
+      (user-error "No saved form in register"))))
 (define-key inf-clojure-insert-commands-map (kbd "x") #'inf-clojure-insert-register-contents)
 (define-key inf-clojure-insert-commands-map (kbd "C-x") #'inf-clojure-insert-register-contents)
 (define-key inf-clojure-mode-map (kbd "C-c C-j") inf-clojure-insert-commands-map)
-
-(use-package cider
-  :demand t
-  :load-path "~/projects/dev/cider/"
-  :init
-  (load "cider-autoloads" t t)
-  :config
-  (setq cider-invert-insert-eval-p t)
-  (setq cider-switch-to-repl-on-insert nil)
-  (setq cider-auto-select-test-report-buffer nil)
-  (setq cider-font-lock-dynamically t)
-  (setq cider-show-error-buffer nil)
-  (setq cider-repl-display-help-banner nil)
-  (setq cider-repl-pop-to-buffer-on-connect 'display-only)
-  (setq cider-repl-tab-command (lambda () (company-indent-or-complete-common nil)))
-  :bind (:map
-         cider-repl-mode-map
-         ("RET" . cider-repl-newline-and-indent)
-         ("C-j" . cider-repl-return)
-         ("C-c SPC" . clojure-align)
-         ;; :map
-         ;; paredit-mode-map
-         ;; ("C-j" . cider-repl-return)
-         ))
 
 ;; ‘C-x r s <register-key>’ save to register
 ;; 'C-c C-j x <register-key' to send to repl
