@@ -912,6 +912,7 @@ Clojure mode and CIDER are dev versions locally
            ("C-c h" . personal/repl-requires)
            ("C-c t" . personal/set-test)
            ("C-c C-t" . personal/set-test)
+           ("C-c i" . personal/set-top-level)
            ("C-M-i" . personal/insert-comment)))
 
   (use-package cider
@@ -1013,6 +1014,16 @@ Configuration for inf-clojure
           (set-register ?i (s-concat "(clojure.test/run-test " (thing-at-point 'symbol) ")"))
           (message "set i register to: %s" (get-register ?i)))
       (message "not looking at test")))
+
+  (defun personal/set-top-level ()
+    "Set top level form to the `i` register."
+    (interactive)
+    (save-excursion
+      (beginning-of-defun)
+      (let ((beg (point)))
+        (clojure-forward-logical-sexp)
+        (set-register ?i (buffer-substring beg (point)))
+        (message "set i register to %s " (s-truncate 40 (buffer-substring beg (point)))))))
 
   (defun inf-clojure-send-input ()
     "Send."
